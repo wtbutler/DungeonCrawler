@@ -7,9 +7,9 @@ class PlayerCharacter(characterObject.Character):
     currentLife = 20
     walkable = ["  ","--"]
     baseAttack = 2
-    attack = 0
+    attack = 10
     baseDefence = 5
-    defense = 0
+    defense = 10
     currentWeapon = ""
     currentArmor = ""
     # Head, Torso, Legs, Arms
@@ -42,7 +42,7 @@ class PlayerCharacter(characterObject.Character):
         elif item.itemType=="Armor":
             if item.slot=="Head":
                 if self.armorList[0]:
-                    
+
                 self.armorList[0]=item
             if item.slot=="Torso":
                 self.armorList[1]=item
