@@ -7,21 +7,26 @@ class PlayerCharacter(characterObject.Character):
     currentLife = 20
     walkable = ["  ","--"]
     baseAttack = 2
+    attack = 0
     baseDefence = 5
+    defense = 0
     currentWeapon = ""
     currentArmor = ""
+    # Head, Torso, Legs, Arms
     armorList = []
-    weaponList = []
-    miscItemList = []
-    itemList = [armorList, weaponList, miscItemList]
+    # Rh, Lh
+    weapon = ""
+    itemList = []
 
     def __init__(self, positionx, positiony):
         self.position[0] = positionx
         self.position[1] = positiony
+        self.defense = self.baseDefence
+        self.attack = self.baseAttack
 
     def attack(self, target, currentActors):
         if self.rand.random()<.9:
-            damageDone = int(self.baseAttack*(100-target.baseDefence)/100)
+            damageDone = int((self.baseAttack)*(100-target.baseDefence)/100)
             target.takeDamage(damageDone)
             print("Did {} damage!".format(damageDone))
         else:
@@ -29,6 +34,24 @@ class PlayerCharacter(characterObject.Character):
 
     def loadFromInfo(self):
         self.name, self.position, self.maxLife, self.currentLife, self.level, self.icon = self.info
+
+    def equip(self, item):
+        if item.itemType=="Weapon":
+            self.weapon = item
+            self.attack = self.baseAttack+self.weapon.value
+        elif item.itemType=="Armor":
+            if item.slot=="Head":
+                if self.armorList[0]:
+                    
+                self.armorList[0]=item
+            if item.slot=="Torso":
+                self.armorList[1]=item
+            if item.slot=="Legs":
+                self.armorList[2]=item
+            if item.slot=="Arms":
+                self.armorList[3]=item
+        else:
+            print("Please try to equip a valid item.")
 
     def move(self, currentMap, actorList, direction):
         availableSides = self.testWalls(currentMap.mapCoordinateList, actorList)
