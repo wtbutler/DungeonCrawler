@@ -1,15 +1,17 @@
 import os,sys
 from PIL import Image
+import tileObjects
 
 def getMapFromImage(path, image):
-    
+
     inputImage = Image.open(path+image)
     mapPix = inputImage.load()
-    
+
     xLen = inputImage.size[0]
     yLen = inputImage.size[1]
     emptyFloor = (255,255,255)
     door = (255,0,0)
+    wall = (0,0,0)
     infoList = [image[:-4]]
     mapToReturn = []
     for y in range(yLen):
@@ -20,29 +22,32 @@ def getMapFromImage(path, image):
     for x in range(xLen):
         for y in range(yLen):
             tile = "  "
-            if mapPix[x,y] != emptyFloor:
+            if mapPix[x,y] == emptyFloor: mapToReturn[y][x] = tileObjects.FloorTile()
+            if mapPix[x,y] == wall:
                 up = False
                 down = False
                 right = False
                 left = False
                 neighbors = 0
-                if  mapPix[x,y-1]!=emptyFloor:
+                if  mapPix[x,y-1]==wall:
                     up = True
                     neighbors+=1
-                if mapPix[x,y+1]!=emptyFloor:
+                if mapPix[x,y+1]!=wall:
                     down = True
                     neighbors+=1
-                if mapPix[x-1,y]!=emptyFloor:
+                if mapPix[x-1,y]!=wall:
                     left = True
                     neighbors+=1
-                if mapPix[x+1,y]!=emptyFloor:
+                if mapPix[x+1,y]!=wall:
                     right = True
                     neighbors+=1
-                if up and down: tile = "||"
+                if neighbors>=3: tile = "##"
+                elif up and down: tile = "||"
                 elif left and right: tile = "=="
                 else: tile = "##"
+                mapToReturn[y][x] = tileObjects.WallTile(tile)
             if mapPix[x,y] == door:
                 tile = "--"
                 infoList+=[(x,y)]
-            mapToReturn[y][x] = tile
+                mapToReturn[y][x] = tileObjects.DoorTile()
     return mapToReturn+[infoList]

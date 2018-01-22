@@ -8,3 +8,7 @@ class Queue():
             print(self.actionList[0])
             self.actionList.pop(0)
         print("done")
+
+    def attack(self, damage, tiles):
+        for tile in tiles:
+            tile.attack(damage)
