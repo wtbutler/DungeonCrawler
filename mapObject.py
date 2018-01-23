@@ -5,7 +5,7 @@ class DungeonMap():
     mapInfo = []
     connectionPoints = []
     connections = []
-    enemyList = []
+    actorList = []
     objectList = []
 
     def __init__(self, mapListFromReader):
@@ -14,8 +14,16 @@ class DungeonMap():
         self.connectionPoints = self.mapInfo[1:]
         self.mapCoordinateList = mapListFromReader
         self.connections = []
-        self.enemyList = []
+        self.actorList = []
         self.objectList = []
 
     def setConnections(self, listOfConnections):
         self.connections = listOfConnections
+        for tile in self.connectionPoints:
+            tile.setConnection(listOfConnections[1])
+
+    def addCreature(self, location, creature):
+        if self.mapCoordinateList[location[0],location[1]].canPlace():
+            self.mapCoordinateList[location[0],location[1]].actor=creature
+        else:
+            print("not possible")

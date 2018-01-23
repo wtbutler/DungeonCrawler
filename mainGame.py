@@ -54,12 +54,12 @@ class Game():
         for imageName in os.listdir(self.path+"maps\\"):
             print(imageName)
             self.dungeonMaps[imageName[:-4]] = mapObject.DungeonMap(mapReading.getMapFromImage(self.path+"maps\\", imageName))
-        self.dungeonMaps["Start"].setConnections([[["Start", (12,8)], ["dungeon2", (3,2)]],
-                                             [["Start",(18,3)],["dungeon1",(3,9)]]])
-        self.dungeonMaps["dungeon1"].setConnections([[["dungeon1",(2,9)], ["Start",(17,3)]],
-                                                [["dungeon1",(8,14)],["dungeon2",(16,2)]]])
-        self.dungeonMaps["dungeon2"].setConnections([[["dungeon2",(3,1)], ["Start",(12,7)]],
-                                                [["dungeon2",(16,1)],["dungeon1",(8,13)]]])
+        self.dungeonMaps["Start"].setConnections(       [[["Start", (12,8)], ["dungeon2", (3,2)]],
+                                                        [["Start",(18,3)],["dungeon1",(3,9)]]])
+        self.dungeonMaps["dungeon1"].setConnections(    [[["dungeon1",(2,9)], ["Start",(17,3)]],
+                                                        [["dungeon1",(8,14)],["dungeon2",(16,2)]]])
+        self.dungeonMaps["dungeon2"].setConnections(    [[["dungeon2",(3,1)], ["Start",(12,7)]],
+                                                        [["dungeon2",(16,1)],["dungeon1",(8,13)]]])
 
     ## DEBUG - REMOVE LATER
     def debugSpace(self):
