@@ -10,6 +10,7 @@ class DungeonMap():
 
     def __init__(self, mapListFromReader):
         self.mapInfo = mapListFromReader.pop(-1)
+        print(self.mapInfo)
         self.name = self.mapInfo[0]
         self.connectionPoints = self.mapInfo[1:]
         self.mapCoordinateList = mapListFromReader
@@ -20,7 +21,8 @@ class DungeonMap():
     def setConnections(self, listOfConnections):
         self.connections = listOfConnections
         for tile in self.connectionPoints:
-            tile.setConnection(listOfConnections[1])
+            print(tile)
+            self.mapCoordinateList[tile[1]][tile[0]].setConnection(listOfConnections[1][0], listOfConnections[1][1])
 
     def addCreature(self, location, creature):
         if self.mapCoordinateList[location[0],location[1]].canPlace():

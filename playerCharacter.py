@@ -42,7 +42,7 @@ class PlayerCharacter(characterObject.Character):
         elif item.itemType=="Armor":
             if item.slot=="Head":
                 if self.armorList[0]:
-
+                    print('do Nothing')
                 self.armorList[0]=item
             if item.slot=="Torso":
                 self.armorList[1]=item
@@ -79,7 +79,9 @@ class PlayerCharacter(characterObject.Character):
 
     def update(self, currentMap, actorList, turnText):
         if turnText[0] == 'move':
-            self.move()
+            string = 'move '+self.position+' '+turntext[1]
+            print(string)
+            return string
         if turnText[0] == 'attack':
             try:
                 if self.findDistance(self.currentActors[int(self.turnText[1])].position)<4:

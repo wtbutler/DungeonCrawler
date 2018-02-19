@@ -52,6 +52,7 @@ class Character(genO.GeneralObject):
 
     def update(self, currentMap, actorList, turnText):
         availableSides = self.testWalls(currentMap.mapCoordinateList)
+        return ""
 
     def updateInfo(self):
         self.info = [self.name, self.position, self.maxLife, self.currentLife, self.level, self.icon]

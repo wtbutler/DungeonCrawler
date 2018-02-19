@@ -63,15 +63,15 @@ class Game():
 
     ## DEBUG - REMOVE LATER
     def debugSpace(self):
-        self.dungeonMaps["Start"].enemyList += [monsterObject.Monster("defaultName",[2,6], 1, items = ["Burning Sword", "Healing Potion"])]
-        self.dungeonMaps["Start"].enemyList += [monsterObject.Monster("defaultName2",[2,7], 1, items = ["Burning Sword", "Healing Potion"])]
-        self.dungeonMaps["dungeon1"].enemyList += [monsterObject.Monster("defaultName3",[5,6], 2)]
+        self.dungeonMaps["Start"].actorList += [monsterObject.Monster("defaultName",[2,6], 1, items = ["Burning Sword", "Healing Potion"])]
+        self.dungeonMaps["Start"].actorList += [monsterObject.Monster("defaultName2",[2,7], 1, items = ["Burning Sword", "Healing Potion"])]
+        self.dungeonMaps["dungeon1"].actorList += [monsterObject.Monster("defaultName3",[5,6], 2)]
     # ^^^^^^^^^^^^^^^^^^
 
     # Changes enemies and map when the room changes
     def mapChange(self, destination):
         self.currentMap = self.dungeonMaps[destination[0]]
-        self.currentActors = [self.player] + self.dungeonMaps[destination[0]].enemyList
+        self.currentActors = [self.player] + self.dungeonMaps[destination[0]].actorList
         self.currentObjects = self.dungeonMaps[destination[0]].objectList
         self.player.teleport(destination[1])
         self.drawMap()
@@ -88,8 +88,9 @@ class Game():
     # Returns the visual map
     def drawMap(self):
         temporaryMap = []
-        for i in self.currentMap.mapCoordinateList:
-            temporaryMap += [i[:]]
+        # Adds each row by piece, as a copy of the mapCoordinateList
+        for row in self.currentMap.mapCoordinateList:
+            temporaryMap += [row[:]]
         for thing in self.currentActors+self.currentObjects:
             ## DEBUG - REMOVE LATER
             if self.debugMode == True:
@@ -99,7 +100,7 @@ class Game():
             temporaryMap[thing.position[1]][thing.position[0]] = thing.icon
         tempList = []
         for i in temporaryMap:
-            tempList += [''.join(i)]
+            tempList += [''.join([str(x) for x in i])]
         return '\n'.join(tempList)
 
     # Def save/load functionality
