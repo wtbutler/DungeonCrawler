@@ -136,9 +136,9 @@ class GameView(tk.Frame):
         self.game.loadSetup()
         self.gameState = 'load'
 
-    # WORK ON THIS
     def quit(self):
-        self.game.quit()
+        global root
+        root.quit()
 
     def lookForPrev(self, Event):
         if Event.keycode==38:
