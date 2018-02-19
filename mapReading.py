@@ -32,13 +32,13 @@ def getMapFromImage(path, image):
                 if  mapPix[x,y-1]==wall:
                     up = True
                     neighbors+=1
-                if mapPix[x,y+1]!=wall:
+                if mapPix[x,y+1]==wall:
                     down = True
                     neighbors+=1
-                if mapPix[x-1,y]!=wall:
+                if mapPix[x-1,y]==wall:
                     left = True
                     neighbors+=1
-                if mapPix[x+1,y]!=wall:
+                if mapPix[x+1,y]==wall:
                     right = True
                     neighbors+=1
                 if neighbors>=3: tile = "##"
