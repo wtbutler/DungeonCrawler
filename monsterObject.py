@@ -50,7 +50,7 @@ class Monster(characterObject.Character):
 
 # reference - available sides = [up,right,down,left]
     def update(self, currentMap, actorList, turnText):
-        availableSides = self.testWalls(currentMap.mapCoordinateList, actorList)
+        availableSides = self.testWalls(currentMap.mapCoordinateList)
         distance = self.findDistance(actorList[0].position)
         if distance<=9 and distance>2:
             dx = actorList[0].position[0]-self.position[0]

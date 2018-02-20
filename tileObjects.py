@@ -1,20 +1,19 @@
 import tile
 class FloorTile(tile.Tile):
-    actor = 0
+    actorList = []
     def __init__(self):
-        self.actor = 0
+        self.actorList = []
         self.icon = "  "
 
     def attack(self, damage):
         self.icon = "//"
-        for actor in self.actorList:
-            actor.takeDamage(damage)
+        self.actor.takeDamage(damage)
         self.icon = "  "
 
     def isEmpty(self):
-        return len(actorList)==0
+        return len(self.actorList)==0
     def canPlace(self):
-        return len(actorList)==0
+        return len(self.actorList)==0
 
 class WallTile(tile.Tile):
     def __init__(self, myicon):

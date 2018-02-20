@@ -9,7 +9,6 @@ class Character(genO.GeneralObject):
     level = 0
     # reference -     up    right down  left
     availableSides = [True, True, True, True]
-    walkable = ["  "]
     rand = r.Random()
 
     def teleport(self, targetPoint):
@@ -26,28 +25,16 @@ class Character(genO.GeneralObject):
         if distType == "absolute": return ((self.position[0]-pos2[0])*(self.position[0]-pos2[0])+(self.position[1]-pos2[1])*(self.position[1]-pos2[1]))
         if distType == "turns": return abs(self.position[0]-player.position[0])+abs(self.position[1]-player.position[1])-1
 
-    def testWalls(self, currentMap, actorList):
+    def testWalls(self, currentMap):
         testables = [currentMap[self.position[1]-1][self.position[0]],
                      currentMap[self.position[1]][self.position[0]+1],
                      currentMap[self.position[1]+1][self.position[0]],
                      currentMap[self.position[1]][self.position[0]-1]]
-        for actor in actorList:
-            if self.findDistance(actor.position) == 1:
-                xDist = self.position[0]-actor.position[0]
-                yDist = self.position[1]-actor.position[1]
-                if xDist == 1:
-                    testables[3] = actor.icon
-                if xDist == -1:
-                    testables[1] = actor.icon
-                if yDist == -1:
-                    testables[2] = actor.icon
-                if yDist == 1:
-                    testables[0] = actor.icon
         toReturn = [False, False, False, False]
-        for i in range(len(testables)):
-            for test in self.walkable:
-                if testables[i] == test:
-                    toReturn[i] = True
+        for tile in range(len(testables)):
+            if testables[tile].canPlace():
+                toReturn[tile] = True
+        print(toReturn)
         return toReturn
 
     def update(self, currentMap, actorList, turnText):

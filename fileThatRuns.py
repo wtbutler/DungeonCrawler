@@ -106,6 +106,11 @@ class GameView(tk.Frame):
             self.game.load(turnText)
             self.textMap.set(self.game.drawMap())
             self.gameState = 'normal'
+        elif self.gameState == 'quit':
+            # code for quitting
+            # if turnText=='yes' or turnText=='y':
+                global root
+                root.quit()
         self.textField.delete(0, 'end')
 
     def drawFromCache(self):
@@ -137,8 +142,8 @@ class GameView(tk.Frame):
         self.gameState = 'load'
 
     def quit(self):
-        global root
-        root.quit()
+        print('Are you sure you want to quit? [Y/N]')
+        self.gameState = 'quit'
 
     def lookForPrev(self, Event):
         if Event.keycode==38:
