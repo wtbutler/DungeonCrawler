@@ -1,8 +1,8 @@
 import tile
 class FloorTile(tile.Tile):
-    actorList = []
+    actor = 0
     def __init__(self):
-        self.actorList = []
+        self.actor = 0
         self.icon = "  "
 
     def attack(self, damage):
@@ -11,9 +11,9 @@ class FloorTile(tile.Tile):
         self.icon = "  "
 
     def isEmpty(self):
-        return len(self.actorList)==0
+        return self.actor==0
     def canPlace(self):
-        return len(self.actorList)==0
+        return self.actor==0
 
 class WallTile(tile.Tile):
     def __init__(self, myicon):
@@ -26,7 +26,7 @@ class WallTile(tile.Tile):
 class DoorTile(tile.Tile):
     connection = []
     def __init__(self):
-        self.init = "--"
+        self.icon = "--"
         self.connection = []
     def setConnection(self, destMapName, destMapCoordinates):
         self.connection = [destMapName, destMapCoordinates]

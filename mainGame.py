@@ -150,6 +150,9 @@ class Game():
                 return
             self.textType = 'other'
 
+    def do(self, actor, text):
+        splitText = text.split(" ")
+
     def passiveCommand(self):
         # Code for passive commands
         ## DEBUG information and commands - REMOVE LATER
@@ -219,7 +222,7 @@ class Game():
                         self.textType = 'pass'
                         return True
             # ^^^^^^^^^^^^^^^^^^^^^
-            
+
             # Attack code
             if self.turnText[0] == "attack":
                 try:
