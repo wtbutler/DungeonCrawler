@@ -74,7 +74,7 @@ class GameView(tk.Frame):
                 self.game.activeCommand()
 
                 # Checks for door collision
-                if self.game.currentMap.mapCoordinateList[self.game.player.position[1]][self.game.player.position[0]]=="--":
+                if self.game.currentMap.mapCoordinateList[self.game.player.position[0]][self.game.player.position[1]]=="--":
                     for door in self.game.currentMap.connections:
                         if door[0][1] == tuple(self.game.player.position):
                             self.game.mapChange(door[1])

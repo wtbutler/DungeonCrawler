@@ -244,37 +244,33 @@ class Game():
             # Defines move commands
             if self.turnText[0] == 'move':
                 try:
-                    positionx=self.player.position[0]
-                    positiony=self.player.position[1]
+                    positionx=self.player.position[1]
+                    positiony=self.player.position[0]
                     print('okay, here we go...', self.turnText[1])
-                    if self.turnText[1]=='up':
-                        print('self.currentMap[positionx][positiony-1].isEmpty()')
-                        if self.currentMap.mapCoordinateList[positionx][positiony-1].isEmpty():
-                            self.currentMap.mapCoordinateList[positionx][positiony].emptyThis()
-                            self.player.position=[positionx, positiony-1]
-                            self.currentMap.mapCoordinateList[positionx][positiony-1].actor=self.player
-                            print(self.currentMap.mapCoordinateList[positionx][positiony-1].actor)
-                    if self.turnText[1]=='right':
-                        print('self.currentMap[positionx+1][positiony].isEmpty()')
-                        if self.currentMap.mapCoordinateList[positionx+1][positiony].isEmpty():
-                            self.currentMap.mapCoordinateList[positionx][positiony].emptyThis()
-                            self.player.position=[positionx+1, positiony]
-                            self.currentMap.mapCoordinateList[positionx+1][positiony].actor=self.player
-                            print(self.currentMap.mapCoordinateList[positionx+1][positiony].actor)
-                    if self.turnText[1]=='down':
-                        print('self.currentMap[positionx][positiony+1].isEmpty()')
-                        if self.currentMap.mapCoordinateList[positionx][positiony+1].isEmpty():
-                            self.currentMap.mapCoordinateList[positionx][positiony].emptyThis()
-                            self.player.position=[positionx, positiony+1]
-                            self.currentMap.mapCoordinateList[positionx][positiony+1].actor=self.player
-                            print(self.currentMap.mapCoordinateList[positionx][positiony+1].actor)
                     if self.turnText[1]=='left':
-                        print('self.currentMap[positionx-1][positiony].isEmpty()')
-                        if self.currentMap.mapCoordinateList[positionx-1][positiony].isEmpty():
-                            self.currentMap.mapCoordinateList[positionx][positiony].emptyThis()
-                            self.player.position=[positionx-1, positiony]
-                            self.currentMap.mapCoordinateList[positionx-1][positiony].actor=self.player
-                            print(self.currentMap.mapCoordinateList[positionx-1][positiony].actor)
+                        if self.currentMap.mapCoordinateList[positiony][positionx-1].isEmpty():
+                            self.currentMap.mapCoordinateList[positiony][positionx].emptyThis()
+                            self.player.position=[positiony, positionyx-1]
+                            self.currentMap.mapCoordinateList[positiony][positionx-1].actor=self.player
+                            print(self.currentMap.mapCoordinateList[positiony][positionx-1].actor)
+                    if self.turnText[1]=='down':
+                        if self.currentMap.mapCoordinateList[positiony+1][positionx].isEmpty():
+                            self.currentMap.mapCoordinateList[positiony][positionx].emptyThis()
+                            self.player.position=[positiony+1, positionx]
+                            self.currentMap.mapCoordinateList[positiony+1][positionx].actor=self.player
+                            print(self.currentMap.mapCoordinateList[positiony+1][positionx].actor)
+                    if self.turnText[1]=='right':
+                        if self.currentMap.mapCoordinateList[positiony][positionx+1].isEmpty():
+                            self.currentMap.mapCoordinateList[positiony][positionx].emptyThis()
+                            self.player.position=[positiony, positionx+1]
+                            self.currentMap.mapCoordinateList[positiony][positionx+1].actor=self.player
+                            print(self.currentMap.mapCoordinateList[positiony][positionx+1].actor)
+                    if self.turnText[1]=='up':
+                        if self.currentMap.mapCoordinateList[positiony-1][positionx].isEmpty():
+                            self.currentMap.mapCoordinateList[positiony][positionx].emptyThis()
+                            self.player.position=[positiony-1, positionx]
+                            self.currentMap.mapCoordinateList[positiony-1][positionx].actor=self.player
+                            print(self.currentMap.mapCoordinateList[positiony-1][positionx].actor)
 
                     # self.player.move(self.currentMap, self.currentActors+self.currentObjects, self.turnText[1])
                 except Exception as e:

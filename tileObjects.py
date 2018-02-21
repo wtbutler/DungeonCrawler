@@ -36,6 +36,8 @@ class DoorTile(tile.Tile):
         self.connection = []
     def setConnection(self, destMapName, destMapCoordinates):
         self.connection = [destMapName, destMapCoordinates]
+    def getConnection(self):
+        return self.connection
     def isEmpty(self):
         return True
     def canPlace(self):
