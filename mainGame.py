@@ -138,7 +138,7 @@ class Game():
                     self.turnText.insert(0,self.keywords[key[1]][0])
                     self.textType = self.keywords[key[1]][1]
                 if (self.debugMode == False) and len(key) > 3:
-                    if self.turnText[1] == 'ntolaa':
+                    if len(self.turnText)>1 and self.turnText[1] == 'ntolaa':
                         self.debugMode = True
                         self.turnText.pop(1)
                     else:
@@ -147,8 +147,12 @@ class Game():
                 if self.debugMode == True:
                         print(self.textType+"ive command")
                 # ^^^^^^^^^^^
-                return
-            self.textType = 'other'
+                if self.turnText[0] == 'end':
+                    print('Are you sure you want to quit? [Y/N]')
+                    return 'quit'
+                return 'normal'
+        self.textType = 'other'
+        return 'normal'
 
     def do(self, actor, text):
         splitText = text.split(" ")
@@ -240,7 +244,39 @@ class Game():
             # Defines move commands
             if self.turnText[0] == 'move':
                 try:
-                    self.player.move(self.currentMap, self.currentActors+self.currentObjects, self.turnText[1])
+                    positionx=self.player.position[0]
+                    positiony=self.player.position[1]
+                    print('okay, here we go...', self.turnText)
+                    if self.turnText[1]=='up':
+                        print(self.currentMap[positionx][positiony-1].isEmpty())
+                        if self.currentMap[positionx][positiony-1].isEmpty():
+                            self.currentMap[positionx][positiony].emptyThis()
+                            self.player.position=[positionx, positiony-1]
+                            self.currentMap[positionx][positiony-1].actor=player
+                            print(self.currentMap[positionx][positiony-1].actor)
+                    if self.turnText[1]=='right':
+                        print(self.currentMap[positionx+1][positiony].isEmpty())
+                        if self.currentMap[positionx+1][positiony].isEmpty():
+                            self.currentMap[positionx][positiony].emptyThis()
+                            self.player.position=[positionx+1, positiony]
+                            self.currentMap[positionx+1][positiony].actor=player
+                            print(self.currentMap[positionx+1][positiony].actor)
+                    if self.turnText[1]=='down':
+                        print(self.currentMap[positionx][positiony+1].isEmpty())
+                        if self.currentMap[positionx][positiony+1].isEmpty():
+                            self.currentMap[positionx][positiony].emptyThis()
+                            self.player.position=[positionx, positiony+1]
+                            self.currentMap[positionx][positiony+1].actor=player
+                            print(self.currentMap[positionx][positiony+1].actor)
+                    if self.turnText[1]=='left':
+                        print(self.currentMap[positionx-1][positiony].isEmpty())
+                        if self.currentMap[positionx-1][positiony].isEmpty():
+                            self.currentMap[positionx][positiony].emptyThis()
+                            self.player.position=[positionx-1, positiony]
+                            self.currentMap[positionx-1][positiony].actor=player
+                            print(self.currentMap[positionx-1][positiony].actor)
+
+                    # self.player.move(self.currentMap, self.currentActors+self.currentObjects, self.turnText[1])
                 except:
                     print("Please input a valid dirction")
                     self.textType = 'pass'

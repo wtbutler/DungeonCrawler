@@ -57,15 +57,18 @@ class GameView(tk.Frame):
 
     def entryField(self, Event):
         turnText = self.textField.get()
-        print(turnText)
+        print(turnText, self.gameState)
         if len(self.prevCommands)==0 or not(len(turnText)==0 or self.prevCommands[-1]==turnText):
             self.prevCommands+=[turnText]
         self.prevSearchKey = 0
         if self.gameState == 'normal':
-            self.game.interpret(turnText)
+            self.gameState = self.game.interpret(turnText)
+            print(self.gameState)
+
             if self.game.textType == 'pass':
                 print(' - passive command - ')
                 self.game.passiveCommand()
+
             elif self.game.textType=='act':
                 print(' - active command - ')
                 self.game.activeCommand()
@@ -92,6 +95,7 @@ class GameView(tk.Frame):
                 self.mapCache = self.mapCache + [self.game.drawMap()]
                 self.after(0, self.toggleInteraction)
                 self.after(0, self.drawFromCache)
+
             else:
                 print('invalid command \'{}\', please type another valid command'.format(turnText))
 

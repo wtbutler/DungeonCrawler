@@ -14,6 +14,8 @@ class FloorTile(tile.Tile):
         return self.actor==0
     def canPlace(self):
         return self.actor==0
+    def emptyThis(self):
+        self.actor = 0
 
 class WallTile(tile.Tile):
     def __init__(self, myicon):

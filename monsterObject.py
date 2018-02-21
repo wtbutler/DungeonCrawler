@@ -68,10 +68,10 @@ class Monster(characterObject.Character):
             # Reaches here if it cannot move closer to the actorList[0] but still sees it,
             else:
                 self.moveRandom(availableSides)
-            return 'move'+direction
+            # return 'move'+direction
         elif distance<=2:
             self.attack(actorList[0])
-            return 'attack'+direction
+            # return 'attack'+direction
         else:
             self.moveRandom(availableSides)
-            return 'move'+direction
+            # return 'move'+direction
