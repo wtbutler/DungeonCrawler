@@ -8,7 +8,7 @@ Required Libraries:
 
 To install, just have Python 3.6, clone the repo, and checkout the Items branch. Then you should be able to run `filethatruns.py` and it should work. 
 
-**THIS GAME IS STILL VERY MUCH IN DEVELOPMENT.** 
+**THIS GAME IS STILL VERY MUCH IN DEVELOPMENT.**  
 There are a lot of bugs:
   * Monsters can walk through each other
   * Doors don't work
