@@ -4,6 +4,10 @@ class FloorTile(tile.Tile):
     def __init__(self):
         self.actor = 0
         self.icon = "  "
+    def __str__(self):
+        if not(self.isEmpty()):
+            return self.actor.icon
+        return self.icon
 
     def attack(self, damage):
         self.icon = "//"
@@ -11,9 +15,9 @@ class FloorTile(tile.Tile):
         self.icon = "  "
 
     def isEmpty(self):
-        return self.actor==0
+        return (self.actor==0)
     def canPlace(self):
-        return self.actor==0
+        return (self.actor==0)
     def emptyThis(self):
         self.actor = 0
 
