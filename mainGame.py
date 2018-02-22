@@ -63,9 +63,10 @@ class Game():
 
     ## DEBUG - REMOVE LATER - spawns enemies in rooms
     def debugSpace(self):
-        self.dungeonMaps["Start"].actorList += [monsterObject.Monster("defaultName",[2,6], 1, items = ["Burning Sword", "Healing Potion"])]
-        self.dungeonMaps["Start"].actorList += [monsterObject.Monster("defaultName2",[2,7], 1, items = ["Burning Sword", "Healing Potion"])]
-        self.dungeonMaps["dungeon1"].actorList += [monsterObject.Monster("defaultName3",[5,6], 2)]
+        # self.dungeonMaps["Start"].actorList += [monsterObject.Monster("defaultName",[2,6], 1, items = ["Burning Sword", "Healing Potion"])]
+        # self.dungeonMaps["Start"].actorList += [monsterObject.Monster("defaultName2",[2,7], 1, items = ["Burning Sword", "Healing Potion"])]
+        # self.dungeonMaps["dungeon1"].actorList += [monsterObject.Monster("defaultName3",[5,6], 2)]
+        return
     # ^^^^^^^^^^^^^^^^^^
 
     # Changes enemies and map when the room changes
@@ -244,34 +245,17 @@ class Game():
             # Defines move commands
             if self.turnText[0] == 'move':
                 try:
-                    positionx=self.player.position[1]
-                    positiony=self.player.position[0]
-                    print('okay, here we go...', self.turnText[1])
-                    if self.turnText[1]=='left':
-                        if self.currentMap.mapCoordinateList[positiony][positionx-1].isEmpty():
-                            self.currentMap.mapCoordinateList[positiony][positionx].emptyThis()
-                            self.player.position=[positiony, positionyx-1]
-                            self.currentMap.mapCoordinateList[positiony][positionx-1].actor=self.player
-                            print(self.currentMap.mapCoordinateList[positiony][positionx-1].actor)
-                    if self.turnText[1]=='down':
-                        if self.currentMap.mapCoordinateList[positiony+1][positionx].isEmpty():
-                            self.currentMap.mapCoordinateList[positiony][positionx].emptyThis()
-                            self.player.position=[positiony+1, positionx]
-                            self.currentMap.mapCoordinateList[positiony+1][positionx].actor=self.player
-                            print(self.currentMap.mapCoordinateList[positiony+1][positionx].actor)
-                    if self.turnText[1]=='right':
-                        if self.currentMap.mapCoordinateList[positiony][positionx+1].isEmpty():
-                            self.currentMap.mapCoordinateList[positiony][positionx].emptyThis()
-                            self.player.position=[positiony, positionx+1]
-                            self.currentMap.mapCoordinateList[positiony][positionx+1].actor=self.player
-                            print(self.currentMap.mapCoordinateList[positiony][positionx+1].actor)
-                    if self.turnText[1]=='up':
-                        if self.currentMap.mapCoordinateList[positiony-1][positionx].isEmpty():
-                            self.currentMap.mapCoordinateList[positiony][positionx].emptyThis()
-                            self.player.position=[positiony-1, positionx]
-                            self.currentMap.mapCoordinateList[positiony-1][positionx].actor=self.player
-                            print(self.currentMap.mapCoordinateList[positiony-1][positionx].actor)
+                    position=[self.player.position[0],self.player.position[1]]
+                    if self.turnText[1]=='left': target = [self.player.position[0],self.player.position[1]-1]
+                    if self.turnText[1]=='down': target = [self.player.position[0]+1,self.player.position[1]]
+                    if self.turnText[1]=='right': target = [self.player.position[0],self.player.position[1]+1]
+                    if self.turnText[1]=='up': target = [self.player.position[0]-1,self.player.position[1]]
 
+                    print(target, position)
+                    if self.currentMap.tileAt(target).isEmpty():
+                        self.currentMap.tileAt(position).emptyThis()
+                        self.player.position=target
+                        self.currentMap.tileAt(target).actor=self.player
                     # self.player.move(self.currentMap, self.currentActors+self.currentObjects, self.turnText[1])
                 except Exception as e:
                     print("Please input a valid dirction", e)

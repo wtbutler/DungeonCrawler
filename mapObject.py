@@ -18,6 +18,9 @@ class DungeonMap():
         self.actorList = []
         self.objectList = []
 
+    def tileAt(self, location):
+        return self.mapCoordinateList[location[0]][location[1]]
+
     def setConnections(self, listOfConnections):
         self.connections = listOfConnections
         for tile in self.connectionPoints:
