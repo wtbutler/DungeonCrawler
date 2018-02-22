@@ -1,9 +1,14 @@
 # DungeonCrawler
 A simple text-adventure game I've been working on from scratch.
 
-To install, just have Python 3.6, clone the repo, and checkout the Items branch. Then you should be able to run filethatruns.py and it should work. 
+Required Libraries:
+ * Tkinter
+ * Pickle
+ * Pillow
 
-THIS GAME IS STILL VERY MUCH IN DEVELOPMENT. 
+To install, just have Python 3.6, clone the repo, and checkout the Items branch. Then you should be able to run `filethatruns.py` and it should work. 
+
+**THIS GAME IS STILL VERY MUCH IN DEVELOPMENT.**  
 There are a lot of bugs:
   * Monsters can walk through each other
   * Doors don't work
