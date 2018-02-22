@@ -10,9 +10,7 @@ class DungeonMap():
         self.mapInfo = mapListFromReader.pop(-1)
         print(self.mapInfo)
         self.name = self.mapInfo[0]
-        self.connectionPoints = self.mapInfo[1:]
         self.mapCoordinateList = mapListFromReader
-        self.connections = []
         self.actorList = []
         self.objectList = []
 

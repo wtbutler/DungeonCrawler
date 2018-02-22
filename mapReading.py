@@ -12,7 +12,7 @@ def getMapFromImage(path, image):
     emptyFloor = (255,255,255)
     door = (255,0,0)
     wall = (0,0,0)
-    infoList = [image[:-4]]
+    mapName = image[:-4]
     mapToReturn = []
     for y in range(yLen):
         tempArray = []
@@ -48,6 +48,6 @@ def getMapFromImage(path, image):
                 mapToReturn[y][x] = tileObjects.WallTile(tile)
             if mapPix[x,y] == door:
                 tile = "--"
-                infoList+=[(x,y)]
                 mapToReturn[y][x] = tileObjects.DoorTile()
-    return mapToReturn+[infoList]
+    print(mapName)
+    return mapToReturn+[mapName]

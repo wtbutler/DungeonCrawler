@@ -129,6 +129,7 @@ class Game():
                 self.player.loadFromInfo()
             self.player.teleport(self.player.position)
             self.drawMap()
+            print("Successfully loaded from {}".format(loadName))
         except:
             print("invalid load file")
 
