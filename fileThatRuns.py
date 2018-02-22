@@ -73,13 +73,6 @@ class GameView(tk.Frame):
                 print(' - active command - ')
                 self.game.activeCommand()
 
-                # Checks for door collision
-                if self.game.currentMap.mapCoordinateList[self.game.player.position[0]][self.game.player.position[1]]=="--":
-                    for door in self.game.currentMap.connections:
-                        if door[0][1] == tuple(self.game.player.position):
-                            self.game.mapChange(door[1])
-                            break
-
                 # Updates all enemies
                 self.mapCache = []
                 self.mapCache = self.mapCache + [self.game.drawMap()]

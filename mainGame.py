@@ -6,6 +6,7 @@ import monsterObject
 import pickle
 import chestObject
 
+# VERY IMPORTANT COMMAND: test ntolaa self.move(self.player, self.currentMap.tileAt([2,2]),[7,12])
 class Game():
     player = playerCharacter.PlayerCharacter(2,2)
     currentMap = 0
@@ -54,12 +55,12 @@ class Game():
         for imageName in os.listdir(self.path+"maps\\"):
             print(imageName)
             self.dungeonMaps[imageName[:-4]] = mapObject.DungeonMap(mapReading.getMapFromImage(self.path+"maps\\", imageName))
-        self.dungeonMaps["Start"].setConnections(       [[["Start", (12,8)], ["dungeon2", (3,2)]],
-                                                        [["Start",(18,3)],["dungeon1",(3,9)]]])
-        self.dungeonMaps["dungeon1"].setConnections(    [[["dungeon1",(2,9)], ["Start",(17,3)]],
-                                                        [["dungeon1",(8,14)],["dungeon2",(16,2)]]])
-        self.dungeonMaps["dungeon2"].setConnections(    [[["dungeon2",(3,1)], ["Start",(12,7)]],
-                                                        [["dungeon2",(16,1)],["dungeon1",(8,13)]]])
+        self.dungeonMaps["Start"].setConnection(       [["Start", (8,12)]  ,   ["dungeon2", (2,3)]])
+        self.dungeonMaps["Start"].setConnection(       [["Start",(3,18)]   ,   ["dungeon1",(9,3)]] )
+        self.dungeonMaps["dungeon1"].setConnection(    [["dungeon1",(9,2)] ,   ["Start",(3,17)]]   )
+        self.dungeonMaps["dungeon1"].setConnection(    [["dungeon1",(14,8)],   ["dungeon2",(2,16)]])
+        self.dungeonMaps["dungeon2"].setConnection(    [["dungeon2",(1,3)] ,   ["Start",(7,12)]]   )
+        self.dungeonMaps["dungeon2"].setConnection(    [["dungeon2",(1,16)],   ["dungeon1",(13,8)]])
 
     ## DEBUG - REMOVE LATER - spawns enemies in rooms
     def debugSpace(self):
@@ -71,10 +72,14 @@ class Game():
 
     # Changes enemies and map when the room changes
     def mapChange(self, destination):
+        print(destination)
+        target = [destination[1][0],destination[1][1]]
+        print(target)
         self.currentMap = self.dungeonMaps[destination[0]]
         self.currentActors = [self.player] + self.dungeonMaps[destination[0]].actorList
         self.currentObjects = self.dungeonMaps[destination[0]].objectList
-        self.player.teleport(destination[1])
+        self.player.position=target
+        self.currentMap.tileAt(target).actor=self.player
         self.drawMap()
 
     # Draws info about enemies
@@ -155,8 +160,18 @@ class Game():
         self.textType = 'other'
         return 'normal'
 
-    def do(self, actor, text):
-        splitText = text.split(" ")
+    def move(self, actor, position, targetCoords):
+        target=self.currentMap.tileAt(targetCoords)
+        # Target and Position are both tile objects from the relevent positions
+        if target.isEmpty():
+            position.emptyThis()
+            actor.position=targetCoords
+            if target.tileType()=='floor':
+                target.actor=actor
+            elif target.tileType()=='door':
+                self.mapChange(target.getConnection())
+            else:
+                print('\nALERT\n\nTHERE HAS BEEN A MAJOR ERROR\n\nALERT\n')
 
     def passiveCommand(self):
         # Code for passive commands
@@ -244,7 +259,7 @@ class Game():
 
             # Defines move commands
             if self.turnText[0] == 'move':
-                try:
+                # try:
                     position=[self.player.position[0],self.player.position[1]]
                     if self.turnText[1]=='left': target = [self.player.position[0],self.player.position[1]-1]
                     if self.turnText[1]=='down': target = [self.player.position[0]+1,self.player.position[1]]
@@ -252,12 +267,8 @@ class Game():
                     if self.turnText[1]=='up': target = [self.player.position[0]-1,self.player.position[1]]
 
                     print(target, position)
-                    if self.currentMap.tileAt(target).isEmpty():
-                        self.currentMap.tileAt(position).emptyThis()
-                        self.player.position=target
-                        self.currentMap.tileAt(target).actor=self.player
+                    self.move(self.player, self.currentMap.tileAt(position), target)
                     # self.player.move(self.currentMap, self.currentActors+self.currentObjects, self.turnText[1])
-                except Exception as e:
-                    print("Please input a valid dirction", e)
-                    self.textType = 'pass'
-                    return True
+                # except Exception as e:
+                #     print("Please input a valid dirction", e)
+                #     self.textType = 'pass'

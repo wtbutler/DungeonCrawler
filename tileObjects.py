@@ -20,6 +20,8 @@ class FloorTile(tile.Tile):
         return (self.actor==0)
     def emptyThis(self):
         self.actor = 0
+    def tileType(self):
+        return 'floor'
 
 class WallTile(tile.Tile):
     def __init__(self, myicon):
@@ -28,6 +30,8 @@ class WallTile(tile.Tile):
         return False
     def canPlace(self):
         return False
+    def tileType(self):
+        return 'wall'
 
 class DoorTile(tile.Tile):
     connection = []
@@ -38,6 +42,8 @@ class DoorTile(tile.Tile):
         self.connection = [destMapName, destMapCoordinates]
     def getConnection(self):
         return self.connection
+    def tileType(self):
+        return 'door'
     def isEmpty(self):
         return True
     def canPlace(self):

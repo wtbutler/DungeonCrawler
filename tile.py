@@ -4,3 +4,5 @@ class Tile():
         return self.icon
     def isEmpty(self):
         return
+    def tileType(self):
+        return
