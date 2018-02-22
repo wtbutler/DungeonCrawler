@@ -17,6 +17,6 @@ I work on this in my spare time, so any updates will be sporadic at best.
 
 I am working in the Items branch for now, but hopefully this will change once I actually figure out how I want the tile structure to go. 
 
-**Feature Log**
+**Update Log**
  * walking is fixed!
  * DOORS ARE FIXED! *(that was more because I was glad to be done than any kind of pride)*
