@@ -156,9 +156,8 @@ class GameView(tk.Frame):
             self.textField.insert(0, self.prevCommands[-1*self.prevSearchKey])
 
     def myPrint(self, text):
-        if text=='toMap\n':
+        if text=='toMap':
             self.mapCache = self.mapCache + [self.game.drawMap()]
-            print(self.mapCache)
             return
         self.printToView(text)
 
