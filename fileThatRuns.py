@@ -8,12 +8,15 @@ class GameView(tk.Frame):
     gameState = 'normal'
     prevCommands = []
     prevSearchKey = 0
+    mapCache = []
 
     def __init__(self, parent, *args, **kwargs):
         tk.Frame.__init__(self, parent, *args, **kwargs)
 
         # Redirects all prints to the text field
-        sys.stdout.write = self.printToView
+        sys.stdout.write = self.myPrint
+
+        self.mapCache = []
 
         # Sets up the toolbar item
         self.toolbar = tk.Frame(self, bg='#eee')
@@ -74,7 +77,6 @@ class GameView(tk.Frame):
                 self.game.activeCommand()
 
                 # Updates all enemies
-                self.mapCache = []
                 self.mapCache = self.mapCache + [self.game.drawMap()]
                 for actor in self.game.currentActors[1:]:
                     if actor.currentLife <= 0:
@@ -111,8 +113,9 @@ class GameView(tk.Frame):
         self.textField.delete(0, 'end')
 
     def drawFromCache(self):
+        print("{} to go".format(len(self.mapCache)))
         self.textMap.set(self.mapCache.pop(0))
-        if len(self.mapCache)>1:
+        if len(self.mapCache)>=1:
             self.after(200,self.drawFromCache)
         else:
             self.toggleInteraction()
@@ -151,6 +154,13 @@ class GameView(tk.Frame):
             self.prevSearchKey = (self.prevSearchKey - 1) % (len(self.prevCommands))
             self.textField.delete(0,'end')
             self.textField.insert(0, self.prevCommands[-1*self.prevSearchKey])
+
+    def myPrint(self, text):
+        if text=='toMap\n':
+            self.mapCache = self.mapCache + [self.game.drawMap()]
+            print(self.mapCache)
+            return
+        self.printToView(text)
 
     def printToView(self, printText):
         self.commandHistory.configure(state="normal")

@@ -4,9 +4,12 @@ class FloorTile(tile.Tile):
     def __init__(self):
         self.actor = 0
         self.icon = "  "
+        self.attacked = False
     def __str__(self):
         if not(self.isEmpty()):
             return self.actor.icon
+        if self.attacked:
+            return '//'
         return self.icon
 
     def attack(self, damage):
