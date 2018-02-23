@@ -10,7 +10,7 @@ import chestObject
 class Game():
     player = playerCharacter.PlayerCharacter(2,2)
     currentMap = 0
-    currentActors = [player]
+    currentActors = []
     currentObjects = []
     textType = "other"
     prevText = ""
@@ -64,9 +64,9 @@ class Game():
 
     ## DEBUG - REMOVE LATER - spawns enemies in rooms
     def debugSpace(self):
-        self.dungeonMaps["Start"].addCreature([6,2],monsterObject.Monster("defaultName",[6,2], 1, items = ["Burning Sword", "Healing Potion"]))
-        self.dungeonMaps["Start"].addCreature([7,2],monsterObject.Monster("defaultName2",[7,2], 1, items = ["Burning Sword", "Healing Potion"]))
-        self.dungeonMaps["dungeon1"].addCreature([6,5],monsterObject.Monster("defaultName3",[6,5], 2))
+        # self.dungeonMaps["Start"].addCreature([6,2],monsterObject.Monster("defaultName",[6,2], 1, items = ["Burning Sword", "Healing Potion"]))
+        # self.dungeonMaps["Start"].addCreature([7,2],monsterObject.Monster("defaultName2",[7,2], 1, items = ["Burning Sword", "Healing Potion"]))
+        # self.dungeonMaps["dungeon1"].addCreature([6,5],monsterObject.Monster("defaultName3",[6,5], 2))
         return
     # ^^^^^^^^^^^^^^^^^^
 
@@ -76,7 +76,7 @@ class Game():
         target = [destination[1][0],destination[1][1]]
         print(target)
         self.currentMap = self.dungeonMaps[destination[0]]
-        self.currentActors = [self.player] + self.dungeonMaps[destination[0]].actorList
+        self.currentActors = self.dungeonMaps[destination[0]].actorList
         self.currentObjects = self.dungeonMaps[destination[0]].objectList
         self.player.position=target
         self.currentMap.tileAt(target).actor=self.player
@@ -297,5 +297,14 @@ class Game():
                     self.textType = 'pass'
 
     def updateOtherActors(self):
-        for actor in self.actorList:
-            actor.update()
+        self.mapCache = self.mapCache + [self.drawMap()]
+        for actor in self.currentActors[1:]:
+            if actor.currentLife <= 0:
+                self.dungeonMaps[self.currentMap.name].enemyList.remove(actor)
+                self.currentActors.remove(actor)
+                self.dungeonMaps[self.currentMap.name].objectList += [actor.death()]
+            else:
+                actor.update(self.currentMap, self.currentActors+self.currentObjects, self.turnText)
+            print(actor.name)
+            print('toMap')
+        print('toMap')

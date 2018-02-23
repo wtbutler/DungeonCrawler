@@ -75,24 +75,12 @@ class GameView(tk.Frame):
                 print(' - active command - ')
                 self.game.activeCommand()
 
-                # Updates all enemies
-                self.mapCache = self.mapCache + [self.game.drawMap()]
-                for actor in self.game.currentActors[1:]:
-                    if actor.currentLife <= 0:
-                        self.game.dungeonMaps[self.game.currentMap.name].enemyList.remove(actor)
-                        self.game.currentActors.remove(actor)
-                        self.game.dungeonMaps[self.game.currentMap.name].objectList += [actor.death()]
-                    else:
-                        actor.update(self.game.currentMap, self.game.currentActors+self.game.currentObjects, self.game.turnText)
-                    print(actor.name)
-                    self.mapCache = self.mapCache + [self.game.drawMap()]
-                self.mapCache = self.mapCache + [self.game.drawMap()]
-                self.after(0, self.toggleInteraction)
-                self.after(0, self.drawFromCache)
-
             else:
                 print('invalid command \'{}\', please type another valid command'.format(turnText))
 
+            self.after(0, self.toggleInteraction)
+            print('toMap')
+            self.after(0, self.drawFromCache)
 
         elif self.gameState == 'save':
             #code for save
