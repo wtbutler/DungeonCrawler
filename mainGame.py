@@ -109,7 +109,7 @@ class Game():
             tempList += [''.join([str(x) for x in i])]
         return '\n'.join(tempList)
 
-    # Def save/load functionality
+    # Def save functionality
     def save(self, saveName):
         if saveName != "":
             with open(self.path+"saves\\"+saveName+'.dat', 'wb') as f:
@@ -117,11 +117,13 @@ class Game():
         else:
             print("Please enter a name for your save file")
 
+    # Shows all saved files for selection to load
     def loadSetup(self):
         print('Please select save...')
         for saveName in os.listdir(self.path+"saves\\"):
             print(" "+saveName[:-4])
 
+    # loads the file chosen
     def load(self, loadName):
         try:
             with open(self.path+"saves\\"+loadName+".dat", 'rb') as f:
@@ -133,6 +135,33 @@ class Game():
         except:
             print("invalid load file")
 
+    # moves an actor object from their current position to a coordinate on the current map
+    def move(self, actor, targetCoords):
+        target=self.currentMap.tileAt(targetCoords)
+        position=self.currentMap.tileAt(actor.position)
+        # Target and Position are both tile objects from the relevent positions
+        if target.isEmpty():
+            position.emptyThis()
+            actor.position=targetCoords
+            if target.tileType()=='floor':
+                target.actor=actor
+            elif target.tileType()=='door':
+                self.mapChange(target.getConnection())
+            else:
+                print('\nALERT\n\nTHERE HAS BEEN A MAJOR ERROR\n\nALERT\n')
+        else:
+            print("That square cannot be moved into")
+
+    # attacks a list of coordinates with a set amount of damage
+    def attack(self, damage, tileList):
+        # give tiles as coordinates, not as tile objects
+        for tile in tileList:
+            self.currentMap.tileAt(tile).attack(damage)
+        print('toMap')
+        for tile in tileList:
+            self.currentMap.tileAt(tile).default()
+
+    # Takes the input text and matches it to one of the members of the command list
     def interpret(self, rawText):
         self.turnText = rawText.split(" ")
 
@@ -161,19 +190,7 @@ class Game():
         self.textType = 'other'
         return 'normal'
 
-    def move(self, actor, position, targetCoords):
-        target=self.currentMap.tileAt(targetCoords)
-        # Target and Position are both tile objects from the relevent positions
-        if target.isEmpty():
-            position.emptyThis()
-            actor.position=targetCoords
-            if target.tileType()=='floor':
-                target.actor=actor
-            elif target.tileType()=='door':
-                self.mapChange(target.getConnection())
-            else:
-                print('\nALERT\n\nTHERE HAS BEEN A MAJOR ERROR\n\nALERT\n')
-
+    # Performs the different passive commands
     def passiveCommand(self):
         # Code for passive commands
         ## DEBUG information and commands - REMOVE LATER
@@ -230,6 +247,7 @@ class Game():
             return False
         return True
 
+    # Performs the different active commands
     def activeCommand(self):
         # Code for active commands
         if self.textType == 'act':
@@ -260,16 +278,10 @@ class Game():
 
             # Defines move commands
             if self.turnText[0] == 'move':
-                # try:
-                    position=[self.player.position[0],self.player.position[1]]
-                    if self.turnText[1]=='left': target = [self.player.position[0],self.player.position[1]-1]
-                    if self.turnText[1]=='down': target = [self.player.position[0]+1,self.player.position[1]]
-                    if self.turnText[1]=='right': target = [self.player.position[0],self.player.position[1]+1]
-                    if self.turnText[1]=='up': target = [self.player.position[0]-1,self.player.position[1]]
-
-                    print(target, position)
-                    self.move(self.player, self.currentMap.tileAt(position), target)
-                    # self.player.move(self.currentMap, self.currentActors+self.currentObjects, self.turnText[1])
-                # except Exception as e:
-                #     print("Please input a valid dirction", e)
-                #     self.textType = 'pass'
+                try:
+                    print(self.turnText[1])
+                    target = self.player.move(self.turnText[1])
+                    self.move(self.player, target)
+                except Exception as e:
+                    print("Please input a valid dirction", e)
+                    self.textType = 'pass'

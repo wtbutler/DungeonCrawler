@@ -53,30 +53,14 @@ class PlayerCharacter(characterObject.Character):
         else:
             print("Please try to equip a valid item.")
 
-    def move(self, currentMap, actorList, direction):
-        availableSides = self.testWalls(currentMap.mapCoordinateList)
-        dungeonMap = currentMap.mapCoordinateList
-        if direction == "down":
-            if availableSides[2] == True:
-                self.position[1]+=1
-            else:
-                print("bump down")
-        elif direction == "right":
-            if availableSides[1] == True:
-                self.position[0]+=1
-            else:
-                print("bump right")
-        elif direction == "left":
-            if availableSides[3] == True:
-                self.position[0]-=1
-            else:
-                print("bump left")
-        elif direction == "up":
-            if availableSides[0] == True:
-                self.position[1]-=1
-            else:
-                print("bump up")
-
+    def move(self, direction):
+        position=[self.position[0],self.position[1]]
+        target = []
+        if direction=='left': target = [self.position[0],self.position[1]-1]
+        if direction=='down': target = [self.position[0]+1,self.position[1]]
+        if direction=='right': target = [self.position[0],self.position[1]+1]
+        if direction=='up': target = [self.position[0]-1,self.position[1]]
+        if target!=[]: return target
     def update(self, currentMap, actorList, turnText):
         if turnText[0] == 'move':
             string = 'move '+self.position+' '+turntext[1]

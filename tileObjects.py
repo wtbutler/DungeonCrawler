@@ -13,10 +13,10 @@ class FloorTile(tile.Tile):
         return self.icon
 
     def attack(self, damage):
-        self.icon = "//"
+        self.attacked=True
         self.actor.takeDamage(damage)
-        self.icon = "  "
-
+    def default(self):
+        self.attacked=False
     def isEmpty(self):
         return (self.actor==0)
     def canPlace(self):

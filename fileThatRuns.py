@@ -60,13 +60,11 @@ class GameView(tk.Frame):
 
     def entryField(self, Event):
         turnText = self.textField.get()
-        print(turnText, self.gameState)
         if len(self.prevCommands)==0 or not(len(turnText)==0 or self.prevCommands[-1]==turnText):
             self.prevCommands+=[turnText]
         self.prevSearchKey = 0
         if self.gameState == 'normal':
             self.gameState = self.game.interpret(turnText)
-            print(self.gameState)
 
             if self.game.textType == 'pass':
                 print(' - passive command - ')
