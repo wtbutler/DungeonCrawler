@@ -64,9 +64,9 @@ class Game():
 
     ## DEBUG - REMOVE LATER - spawns enemies in rooms
     def debugSpace(self):
-        # self.dungeonMaps["Start"].actorList += [monsterObject.Monster("defaultName",[2,6], 1, items = ["Burning Sword", "Healing Potion"])]
-        # self.dungeonMaps["Start"].actorList += [monsterObject.Monster("defaultName2",[2,7], 1, items = ["Burning Sword", "Healing Potion"])]
-        # self.dungeonMaps["dungeon1"].actorList += [monsterObject.Monster("defaultName3",[5,6], 2)]
+        self.dungeonMaps["Start"].addCreature([6,2],monsterObject.Monster("defaultName",[6,2], 1, items = ["Burning Sword", "Healing Potion"]))
+        self.dungeonMaps["Start"].addCreature([7,2],monsterObject.Monster("defaultName2",[7,2], 1, items = ["Burning Sword", "Healing Potion"]))
+        self.dungeonMaps["dungeon1"].addCreature([6,5],monsterObject.Monster("defaultName3",[6,5], 2))
         return
     # ^^^^^^^^^^^^^^^^^^
 
@@ -135,6 +135,17 @@ class Game():
         except:
             print("invalid load file")
 
+    # Returns walls for non-player stuff [up, right, down, left]
+    def testWalls(self, position):
+        testables = [currentMap.tileAt([position[0]-1][position[1]]),
+                     currentMap.tileAt([position[0]][position[1]+1]),
+                     currentMap.tileAt([position[0]+1][position[1]]),
+                     currentMap.tileAt([position[0]][position[1]-1])]
+        toReturn = [False, False, False, False]
+        for i in range(len(testables)):
+            if testables[i].canPlace(): toReturn[i] = True
+        return toReturn
+
     # moves an actor object from their current position to a coordinate on the current map
     def move(self, actor, targetCoords):
         target=self.currentMap.tileAt(targetCoords)
@@ -190,7 +201,7 @@ class Game():
         self.textType = 'other'
         return 'normal'
 
-    # Performs the different passive commands
+    # Performs the different passive commands player
     def passiveCommand(self):
         # Code for passive commands
         ## DEBUG information and commands - REMOVE LATER
@@ -247,7 +258,7 @@ class Game():
             return False
         return True
 
-    # Performs the different active commands
+    # Performs the different active commands player
     def activeCommand(self):
         # Code for active commands
         if self.textType == 'act':
@@ -279,9 +290,12 @@ class Game():
             # Defines move commands
             if self.turnText[0] == 'move':
                 try:
-                    print(self.turnText[1])
                     target = self.player.move(self.turnText[1])
                     self.move(self.player, target)
                 except Exception as e:
                     print("Please input a valid dirction", e)
                     self.textType = 'pass'
+
+    def updateOtherActors(self):
+        for actor in self.actorList:
+            actor.update()

@@ -61,6 +61,7 @@ class PlayerCharacter(characterObject.Character):
         if direction=='right': target = [self.position[0],self.position[1]+1]
         if direction=='up': target = [self.position[0]-1,self.position[1]]
         if target!=[]: return target
+        
     def update(self, currentMap, actorList, turnText):
         if turnText[0] == 'move':
             string = 'move '+self.position+' '+turntext[1]

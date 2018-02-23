@@ -21,7 +21,8 @@ class DungeonMap():
         self.tileAt(connectionInfo[0][1]).setConnection(connectionInfo[1][0], connectionInfo[1][1])
 
     def addCreature(self, location, creature):
-        if self.mapCoordinateList[location[0],location[1]].canPlace():
-            self.mapCoordinateList[location[0],location[1]].actor=creature
+        if self.tileAt(location).canPlace():
+            self.actorList+=[creature]
+            self.tileAt(location).actor=creature
         else:
             print("not possible")

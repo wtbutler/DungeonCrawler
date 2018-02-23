@@ -25,18 +25,6 @@ class Character(genO.GeneralObject):
         if distType == "absolute": return ((self.position[0]-pos2[0])*(self.position[0]-pos2[0])+(self.position[1]-pos2[1])*(self.position[1]-pos2[1]))
         if distType == "turns": return abs(self.position[0]-player.position[0])+abs(self.position[1]-player.position[1])-1
 
-    def testWalls(self, currentMap):
-        testables = [currentMap[self.position[1]-1][self.position[0]],
-                     currentMap[self.position[1]][self.position[0]+1],
-                     currentMap[self.position[1]+1][self.position[0]],
-                     currentMap[self.position[1]][self.position[0]-1]]
-        toReturn = [False, False, False, False]
-        for tile in range(len(testables)):
-            if testables[tile].canPlace():
-                toReturn[tile] = True
-        print(toReturn)
-        return toReturn
-
     def update(self, currentMap, actorList, turnText):
         availableSides = self.testWalls(currentMap.mapCoordinateList)
         return ""

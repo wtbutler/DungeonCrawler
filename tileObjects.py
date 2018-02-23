@@ -6,10 +6,10 @@ class FloorTile(tile.Tile):
         self.icon = "  "
         self.attacked = False
     def __str__(self):
-        if not(self.isEmpty()):
-            return self.actor.icon
         if self.attacked:
             return '//'
+        if not(self.isEmpty()):
+            return self.actor.icon
         return self.icon
 
     def attack(self, damage):

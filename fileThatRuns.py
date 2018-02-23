@@ -33,6 +33,7 @@ class GameView(tk.Frame):
         self.textField.bind('<Key-Return>', self.entryField)
         self.textField.bind('<Key-Up>', self.lookForPrev)
         self.textField.bind('<Key-Down>', self.lookForPrev)
+        self.textField.focus_set()
 
         # Sets up cache of previous commands
         self.commandHistory = tk.Text(self, font=('Consolas',8), bg='#eee', fg='#111', state="disabled")
@@ -167,6 +168,6 @@ class GameView(tk.Frame):
 
 root = tk.Tk()
 root.resizable(width = False, height = False)
-root.geometry('{}x{}'.format(500,500))
+root.geometry('{}x{}+{}+{}'.format(500,500,50,50))
 GameView(root).pack(expand = 1, fill = 'both')
 root.mainloop()

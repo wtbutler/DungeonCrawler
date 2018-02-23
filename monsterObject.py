@@ -12,6 +12,7 @@ class Monster(characterObject.Character):
 
     def __init__(self, name, position, level, health = -1, items = []):
         self.name = name
+        self.icon = ":["
         self.level = level
         self.position = position
         self.maxLife = self.maxLifeModifier * level
@@ -32,7 +33,7 @@ class Monster(characterObject.Character):
     def death(self):
         return chestObject.Chest(self.position, items = self.items)
 
-    def moveRandom(self, availableSides):
+    def move(self, playerPos, availableSides):
         options = [0]
         for side in range(len(availableSides)):
             if availableSides[side]:
