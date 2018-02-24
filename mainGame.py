@@ -64,17 +64,15 @@ class Game():
 
     ## DEBUG - REMOVE LATER - spawns enemies in rooms
     def debugSpace(self):
-        # self.dungeonMaps["Start"].addCreature([6,2],monsterObject.Monster("defaultName",[6,2], 1, items = ["Burning Sword", "Healing Potion"]))
-        # self.dungeonMaps["Start"].addCreature([7,2],monsterObject.Monster("defaultName2",[7,2], 1, items = ["Burning Sword", "Healing Potion"]))
-        # self.dungeonMaps["dungeon1"].addCreature([6,5],monsterObject.Monster("defaultName3",[6,5], 2))
+        self.dungeonMaps["Start"].addCreature(monsterObject.Monster("defaultName",[6,2], 1, items = ["Burning Sword", "Healing Potion"]))
+        self.dungeonMaps["Start"].addCreature(monsterObject.Monster("defaultName2",[7,2], 1, items = ["Burning Sword", "Healing Potion"]))
+        self.dungeonMaps["dungeon1"].addCreature(monsterObject.Monster("defaultName3",[6,5], 2))
         return
     # ^^^^^^^^^^^^^^^^^^
 
     # Changes enemies and map when the room changes
     def mapChange(self, destination):
-        print(destination)
         target = [destination[1][0],destination[1][1]]
-        print(target)
         self.currentMap = self.dungeonMaps[destination[0]]
         self.currentActors = self.dungeonMaps[destination[0]].actorList
         self.currentObjects = self.dungeonMaps[destination[0]].objectList
@@ -137,10 +135,11 @@ class Game():
 
     # Returns walls for non-player stuff [up, right, down, left]
     def testWalls(self, position):
-        testables = [currentMap.tileAt([position[0]-1][position[1]]),
-                     currentMap.tileAt([position[0]][position[1]+1]),
-                     currentMap.tileAt([position[0]+1][position[1]]),
-                     currentMap.tileAt([position[0]][position[1]-1])]
+        print(position)
+        testables = [self.currentMap.tileAt([position[0]-1, position[1]]),
+                     self.currentMap.tileAt([position[0], position[1]+1]),
+                     self.currentMap.tileAt([position[0]+1, position[1]]),
+                     self.currentMap.tileAt([position[0], position[1]-1])]
         toReturn = [False, False, False, False]
         for i in range(len(testables)):
             if testables[i].canPlace(): toReturn[i] = True
@@ -235,9 +234,6 @@ class Game():
         # ^^^^^^^^^^^^^^^^^^^^^
 
         # Regular Commands
-        if self.turnText[0] == "end":
-            self.gameDone = True
-
         if self.turnText[0] == "items":
             print(self.player.items)
 
@@ -260,41 +256,40 @@ class Game():
 
     # Performs the different active commands player
     def activeCommand(self):
-        # Code for active commands
-        if self.textType == 'act':
-            ## DEBUG - REMOVE LATER
-            if self.debugMode == True:
-                if self.turnText[0] == "Lattack":
-                    try:
-                        self.player.attack(self.currentActors[int(self.turnText[1])], self.currentActors)
-                    except (ValueError, IndexError):
-                        print("invalid enemy")
-                        self.textType = 'pass'
-                        return True
-            # ^^^^^^^^^^^^^^^^^^^^^
-
-            # Attack code
-            if self.turnText[0] == "attack":
+        ## DEBUG - REMOVE LATER
+        if self.debugMode == True:
+            if self.turnText[0] == "Lattack":
                 try:
-                    if self.player.findDistance(self.currentActors[int(self.turnText[1])].position)<4:
-                        self.player.attack(self.currentActors[int(self.turnText[1])], self.currentActors)
-                    else:
-                        print("Too far away!")
-                        self.textType = 'pass'
-                        return True
+                    self.player.attack(self.currentActors[int(self.turnText[1])], self.currentActors)
                 except (ValueError, IndexError):
                     print("invalid enemy")
                     self.textType = 'pass'
                     return True
+        # ^^^^^^^^^^^^^^^^^^^^^
 
-            # Defines move commands
-            if self.turnText[0] == 'move':
-                try:
-                    target = self.player.move(self.turnText[1])
-                    self.move(self.player, target)
-                except Exception as e:
-                    print("Please input a valid dirction", e)
+        # Attack code
+        if self.turnText[0] == "attack":
+            try:
+                if self.player.findDistance(self.currentActors[int(self.turnText[1])].position)<4:
+                    self.player.attack(self.currentActors[int(self.turnText[1])], self.currentActors)
+                else:
+                    print("Too far away!")
                     self.textType = 'pass'
+                    return True
+            except (ValueError, IndexError):
+                print("invalid enemy")
+                self.textType = 'pass'
+                return True
+
+        # Defines move commands
+        if self.turnText[0] == 'move':
+            try:
+                target = self.player.move(self.turnText[1])
+                self.move(self.player, target)
+            except Exception as e:
+                print("Please input a valid dirction", e)
+                self.textType = 'pass'
+        print('toMap')
 
     def updateOtherActors(self):
         for actor in self.currentActors:
@@ -305,6 +300,8 @@ class Game():
                 self.currentMap.tileAt(actor.poistion).addObject(actor.death())
             else:
                 decision = actor.update(self.testWalls(actor.position), self.player.position)
+                print(decision)
+                if decision[0]=='move':
+                    self.move(actor, decision[1])
             print(actor.name)
             print('toMap')
-        print('toMap')
