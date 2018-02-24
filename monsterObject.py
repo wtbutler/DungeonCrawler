@@ -33,7 +33,7 @@ class Monster(characterObject.Character):
     def death(self):
         return chestObject.Chest(self.position, items = self.items)
 
-    def move(self, playerPos, availableSides):
+    def moveRandom(self, playerPos, availableSides):
         options = [0]
         for side in range(len(availableSides)):
             if availableSides[side]:
@@ -49,30 +49,32 @@ class Monster(characterObject.Character):
         if choice == 4:
             self.position = [self.position[0]-1, self.position[1]]
 
-
-# reference - available sides = [up,right,down,left]
-    def update(self, currentMap, actorList, turnText):
-        availableSides = self.testWalls(currentMap.mapCoordinateList)
-        distance = self.findDistance(actorList[0].position)
-        if distance<=9 and distance>2:
-            dx = actorList[0].position[0]-self.position[0]
-            dy = actorList[0].position[1]-self.position[1]
-            # Checks if right and left are available and if it has priority to move in that direction
-            if dx!=0 and (abs(dx)>=abs(dy) and dx>0 and availableSides[1]) or (abs(dx)>=abs(dy) and dx<0 and availableSides[3]):
-                self.position[0]+=int(math.copysign(1,dx))
-            # Checks if it should move up or down
-            elif dy!=0 and (dy<0 and availableSides[0]) or (dy>0 and availableSides[2]):
-                self.position[1]+=int(math.copysign(1,dy))
-            # Checks if it should move right or left again in case it couldn't move left or right
-            elif (dx>0 and availableSides[1]) or (dx<0 and availableSides[3]):
-                self.position[0]+=int(math.copysign(1,dx))
-            # Reaches here if it cannot move closer to the actorList[0] but still sees it,
-            else:
-                self.moveRandom(availableSides)
-            # return 'move'+direction
-        elif distance<=2:
-            self.attack(actorList[0])
-            # return 'attack'+direction
+    def moveToPlayer(self, playerPos, availableSides):
+        dx = actorList[0].position[0]-self.position[0]
+        dy = actorList[0].position[1]-self.position[1]
+        # Checks if right and left are available and if it has priority to move in that direction
+        if dx!=0 and (abs(dx)>=abs(dy) and dx>0 and availableSides[1]) or (abs(dx)>=abs(dy) and dx<0 and availableSides[3]):
+            self.position[0]+=int(math.copysign(1,dx))
+        # Checks if it should move up or down
+        elif dy!=0 and (dy<0 and availableSides[0]) or (dy>0 and availableSides[2]):
+            self.position[1]+=int(math.copysign(1,dy))
+        # Checks if it should move right or left again in case it couldn't move left or right
+        elif (dx>0 and availableSides[1]) or (dx<0 and availableSides[3]):
+            self.position[0]+=int(math.copysign(1,dx))
+        # Reaches here if it cannot move closer to the actorList[0] but still sees it,
         else:
             self.moveRandom(availableSides)
+        # return 'move'+direction
+
+
+# reference - available sides = [up,right,down,left]
+    def update(self, availableSides, playerPos):
+        distance = self.findDistance(playerPos)
+        if distance<=9 and distance>2:
+            return ['move', self.moveToPlayer()]
+        elif distance<=2:
+            return ['attack', self.attack(playerPos)]
+            # return 'attack'+direction
+        else:
+            return self.moveRandom(availableSides)
             # return 'move'+direction

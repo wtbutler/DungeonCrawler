@@ -297,14 +297,14 @@ class Game():
                     self.textType = 'pass'
 
     def updateOtherActors(self):
-        self.mapCache = self.mapCache + [self.drawMap()]
-        for actor in self.currentActors[1:]:
+        for actor in self.currentActors:
+            decision = ''
             if actor.currentLife <= 0:
-                self.dungeonMaps[self.currentMap.name].enemyList.remove(actor)
+                self.currentMap.tileAt(actor.poistion).emptyThis()
                 self.currentActors.remove(actor)
-                self.dungeonMaps[self.currentMap.name].objectList += [actor.death()]
+                self.currentMap.tileAt(actor.poistion).addObject(actor.death())
             else:
-                actor.update(self.currentMap, self.currentActors+self.currentObjects, self.turnText)
+                decision = actor.update(self.testWalls(actor.position), self.player.position)
             print(actor.name)
             print('toMap')
         print('toMap')

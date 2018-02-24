@@ -20,9 +20,18 @@ class DungeonMap():
     def setConnection(self, connectionInfo):
         self.tileAt(connectionInfo[0][1]).setConnection(connectionInfo[1][0], connectionInfo[1][1])
 
-    def addCreature(self, location, creature):
+    def addCreature(self, creature):
+        location = creature.position
         if self.tileAt(location).canPlace():
             self.actorList+=[creature]
             self.tileAt(location).actor=creature
+        else:
+            print("not possible")
+
+    def addObject(self, location, newObject):
+        location = newObject.position
+        if self.tileAt(location).canPlace():
+            self.objectList+=[newObject]
+            self.tileAt(location).actor=newObject
         else:
             print("not possible")
