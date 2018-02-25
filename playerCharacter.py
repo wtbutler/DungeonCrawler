@@ -5,15 +5,11 @@ class PlayerCharacter(characterObject.Character):
     position= [0,0]
     maxLife = 20
     currentLife = 20
-    walkable = ["  ","--"]
     baseAttack = 5
     baseDefence = 5
-    currentWeapon = ""
-    currentArmor = ""
     # Head, Torso, Legs, Arms
     armorList = []
-    # Rh, Lh
-    weapon = ""
+    weapon = ''
     itemList = []
 
     def __init__(self, positionx, positiony):
@@ -43,9 +39,6 @@ class PlayerCharacter(characterObject.Character):
                 tileList += [[self.position[0]-1,self.position[1]-1]]
         if tileList!=[]: return [damage, tileList]
         return ['error', 'error']
-
-    def loadFromInfo(self):
-        self.name, self.position, self.maxLife, self.currentLife, self.level, self.icon = self.info
 
     def equip(self, item):
         if item.itemType=="Weapon":

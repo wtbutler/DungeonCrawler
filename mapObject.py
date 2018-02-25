@@ -2,13 +2,11 @@ import tile
 class DungeonMap():
     name = ""
     mapCoordinateList = []
-    mapInfo = []
     actorList = []
     objectList = []
 
     def __init__(self, mapListFromReader):
-        self.mapInfo = mapListFromReader.pop(-1)
-        self.name = self.mapInfo[0]
+        self.name = mapListFromReader.pop(-1)
         self.mapCoordinateList = mapListFromReader
         self.actorList = []
         self.objectList = []

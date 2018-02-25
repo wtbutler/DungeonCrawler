@@ -7,15 +7,12 @@ import pickle
 import chestObject
 
 class Game():
-    player = playerCharacter.PlayerCharacter(2,2)
+    player = 0
     currentMap = 0
     currentActors = []
     currentObjects = []
     textType = "other"
-    prevText = ""
-    turnTextRaw = ""
     turnText = ""
-    gameDone = False
     debugMode = False
     path = ""
     dungeonMaps = {}
@@ -39,6 +36,7 @@ class Game():
 
     # Initializes the game object
     def __init__(self):
+        self.player = playerCharacter.PlayerCharacter(2,2)
         self.findPath()
         self.loadMaps()
         self.debugSpace()
@@ -125,7 +123,6 @@ class Game():
         try:
             with open(self.path+"saves\\"+loadName+".dat", 'rb') as f:
                 self.player, self.dungeonMaps, self.currentMap, self.currentActors, self.currentObjects = pickle.load(f)
-                # self.player.loadFromInfo()
             self.player.teleport(self.player.position)
             self.drawMap()
             print("Successfully loaded from {}".format(loadName))
@@ -257,9 +254,6 @@ class Game():
                         print(" - "+command[0] + ' : '+" ".join(command[2:]))
                     else:
                         print(" -   "+command[0]+ ' : ' + " ".join(command[2:]))
-        if self.gameDone == True:
-            return False
-        return True
 
     # Performs the different active commands player
     def activeCommand(self):
