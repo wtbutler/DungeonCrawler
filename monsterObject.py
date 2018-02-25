@@ -18,7 +18,6 @@ class Monster(characterObject.Character):
         self.maxLife = self.maxLifeModifier * level
         self.currentLife = self.maxLife
         self.items = items
-        self.defense = self.baseDefence
         if health != -1:
             self.currentLife = health
             if self.currentLife>self.maxLife: self.maxLife = health

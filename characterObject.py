@@ -20,7 +20,7 @@ class Character(genO.GeneralObject):
         return
 
     def takeDamage(self, damage):
-        self.currentLife -= math.ceil(damage*(100-self.defense)/100)
+        self.currentLife -= math.ceil(damage*(100-self.baseDefence)/100)
 
     def findDistance(self, pos2, distType = "absolute"):
         if distType == "absolute": return ((self.position[0]-pos2[0])*(self.position[0]-pos2[0])+(self.position[1]-pos2[1])*(self.position[1]-pos2[1]))

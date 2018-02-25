@@ -78,7 +78,7 @@ class GameView(tk.Frame):
             elif self.game.textType=='act':
                 print(' - active command - ')
                 self.game.activeCommand()
-                if self.game.textType]]'act': self.game.updateOtherActors()
+                if self.game.textType=='act': self.game.updateOtherActors()
             else:
                 print('invalid command \'{}\', please type another valid command'.format(turnText))
 
@@ -104,7 +104,6 @@ class GameView(tk.Frame):
         self.textField.delete(0, 'end')
 
     def drawFromCache(self):
-        print("{} to go".format(len(self.mapCache)))
         self.textMap.set(self.mapCache.pop(0))
         if len(self.mapCache)>=1:
             self.after(200,self.drawFromCache)

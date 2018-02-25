@@ -26,8 +26,8 @@ class Game():
         ['left',0,'direction to move'],
         ['up',0,'direction to move'],
         ['down',0,'direction to move'],
-        ["attack",'act','attack a target enemy'],
-        ['Lattack','act','attack a target enemy from anywhere','-TESTING ONLY-'],
+        ["attack",'act','attack in a direction'],
+        ['broad', 5,'attack 3 squares weakly in a direction'],
         ["info",'pass','displays position about a target','-TESTING ONLY-'],
         ["mapinfo",'pass','displays information about the map','-TESTING ONLY-'],
         ["test",'pass','run a command of python script','-TESTING ONLY-'],
@@ -262,7 +262,11 @@ class Game():
 
         # Attack code
         if decision[0]=='attack':
-            return
+            try:
+                self.attack(decision[1], decision[2])
+            except Exception as e:
+                print("Please input a valid dirction", e)
+                self.textType = 'pass'
 
         # Defines move commands
         if decision[0] == 'move':
@@ -277,15 +281,13 @@ class Game():
         for actor in self.currentActors:
             decision = ''
             if actor.currentLife <= 0:
-                self.currentMap.tileAt(actor.poistion).emptyThis()
+                self.currentMap.tileAt(actor.position).emptyThis()
                 self.currentActors.remove(actor)
-                self.currentMap.tileAt(actor.poistion).addObject(actor.death())
+                self.currentMap.tileAt(actor.position).addObject(actor.death())
             else:
                 decision = actor.update(self.testWalls(actor.position), self.player.position)
-                print('decision: {}'.format(decision))
                 if decision[0]=='move':
                     self.move(actor, decision[1])
                 if decision[0]=='attack':
                     self.attack(decision[1], decision[2])
-            print('monsterName: {}'.format(actor.name))
             print('toMap')

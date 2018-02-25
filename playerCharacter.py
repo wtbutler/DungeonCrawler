@@ -6,10 +6,8 @@ class PlayerCharacter(characterObject.Character):
     maxLife = 20
     currentLife = 20
     walkable = ["  ","--"]
-    baseAttack = 2
-    attack = 10
+    baseAttack = 5
     baseDefence = 5
-    defense = 10
     currentWeapon = ""
     currentArmor = ""
     # Head, Torso, Legs, Arms
@@ -21,16 +19,34 @@ class PlayerCharacter(characterObject.Character):
     def __init__(self, positionx, positiony):
         self.position[0] = positionx
         self.position[1] = positiony
-        self.defense = self.baseDefence
-        self.attack = self.baseAttack
 
-    def attack(self, target, currentActors):
-        if self.rand.random()<.9:
-            damageDone = int((self.baseAttack)*(100-target.baseDefence)/100)
-            target.takeDamage(damageDone)
-            print("Did {} damage!".format(damageDone))
-        else:
-            print("You missed!")
+    def attack(self, direction, broad=False):
+        damage = self.baseAttack
+        tileList = []
+        if direction=='left': tileList += [[self.position[0],self.position[1]-1]]
+        if direction=='down': tileList += [[self.position[0]+1,self.position[1]]]
+        if direction=='right': tileList += [[self.position[0],self.position[1]+1]]
+        if direction=='up': tileList += [[self.position[0]-1,self.position[1]]]
+        if broad:
+            damage*=.5
+            if direction=='left':
+                tileList += [[self.position[0]+1,self.position[1]-1]]
+                tileList += [[self.position[0]-1,self.position[1]-1]]
+            if direction=='down':
+                tileList += [[self.position[0]+1,self.position[1]+1]]
+                tileList += [[self.position[0]+1,self.position[1]-1]]
+            if direction=='right':
+                tileList += [[self.position[0]+1,self.position[1]+1]]
+                tileList += [[self.position[0]-1,self.position[1]+1]]
+            if direction=='up':
+                tileList += [[self.position[0]-1,self.position[1]+1]]
+                tileList += [[self.position[0]-1,self.position[1]-1]]
+        print('tileList of Player: {}'.format(tileList))
+        if tileList!=[]: return [damage, tileList]
+        return ['error', 'error']
+
+
+
 
     def loadFromInfo(self):
         self.name, self.position, self.maxLife, self.currentLife, self.level, self.icon = self.info
@@ -54,7 +70,6 @@ class PlayerCharacter(characterObject.Character):
             print("Please try to equip a valid item.")
 
     def move(self, direction):
-        position=[self.position[0],self.position[1]]
         target = []
         if direction=='left': target = [self.position[0],self.position[1]-1]
         if direction=='down': target = [self.position[0]+1,self.position[1]]
@@ -63,8 +78,12 @@ class PlayerCharacter(characterObject.Character):
         if target!=[]: return target
 
     def update(self, turnText):
+        print('turnText in Player: {}'.format(turnText))
         if turnText[0] == 'move':
             return ['move', self.move(turnText[1])]
         if turnText[0] == 'attack':
+            if turnText[1] == 'broad':
+                attack = self.attack(turnText[2], True)
+                return ['attack', attack[0], attack[1]]
             attack = self.attack(turnText[1])
             return ['attack', attack[0], attack[1]]
