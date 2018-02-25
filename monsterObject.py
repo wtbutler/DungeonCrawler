@@ -23,7 +23,7 @@ class Monster(characterObject.Character):
             self.currentLife = health
             if self.currentLife>self.maxLife: self.maxLife = health
 
-    def attack(self, playerPos):
+    def attack(self, playerPos, availableSides):
         tileList = []
         damage = self.baseAttack
         xDiff = playerPos[1]-self.position[1]
@@ -35,11 +35,11 @@ class Monster(characterObject.Character):
             tileList+=[[self.position[0]+int(math.copysign(1,yDiff)), self.position[1]]]
             return [damage, tileList]
         damage *= .5
-        if xDiff!=0:
+        if (xDiff>0 and availableSides[1]) or (xDiff<0 and availableSides[3]):
             tileList+=[[self.position[0], self.position[1]+int(math.copysign(1,xDiff))]]
             tileList+=[[self.position[0]+1, self.position[1]+int(math.copysign(1,xDiff))]]
             tileList+=[[self.position[0]-1, self.position[1]+int(math.copysign(1,xDiff))]]
-        else:
+        elif (yDiff>0 and availableSides[2]) or (yDiff<0 and availableSides[0]):
             tileList+=[[self.position[0]+int(math.copysign(1,yDiff)), self.position[1]]]
             tileList+=[[self.position[0]+int(math.copysign(1,yDiff)), self.position[1]+1]]
             tileList+=[[self.position[0]+int(math.copysign(1,yDiff)), self.position[1]-1]]
@@ -70,7 +70,7 @@ class Monster(characterObject.Character):
         dy = playerPos[0]-self.position[0]
         target = [0,0]
         # Checks if right and left are available and if it has priority to move in that direction
-        if abs(dx)>=abs(dy) and (dx>0 and availableSides[1]) or (dx<0 and availableSides[3]):
+        if abs(dx)>=abs(dy) and ((dx>0 and availableSides[1]) or (dx<0 and availableSides[3])):
             target[1]+=int(math.copysign(1,dx))
         # Checks if it should move up or down
         elif (dy<0 and availableSides[0]) or (dy>0 and availableSides[2]):
@@ -93,7 +93,7 @@ class Monster(characterObject.Character):
             return ['move', self.moveToPlayer(playerPos, availableSides)]
         elif distance<=2:
             print('attacking')
-            attack = self.attack(playerPos)
+            attack = self.attack(playerPos, availableSides)
             return ['attack', attack[0], attack[1]]
             # return 'attack'+direction
         else:

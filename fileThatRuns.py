@@ -18,6 +18,9 @@ class GameView(tk.Frame):
 
         self.mapCache = []
 
+        # Sets the window name
+        self.winfo_toplevel().title("Dungeon Crawler")
+
         # Sets up the toolbar item
         self.toolbar = tk.Frame(self, bg='#eee')
         self.toolbar.pack(side = 'top', fill='x')
@@ -25,7 +28,7 @@ class GameView(tk.Frame):
         # Sets up the label where the map will be, with
         # white text and a dark grey background
         self.map = tk.Label(self, text = '', font=('Consolas',14), bg = '#333', fg='#fff')
-        self.map.pack(side = 'top', fill = 'x')
+        self.map.pack(side = 'left', fill = 'y')
 
         # Sets up the entry field for commands
         self.textField = tk.Entry(self, font = ('Consolas',14))
@@ -37,7 +40,7 @@ class GameView(tk.Frame):
 
         # Sets up cache of previous commands
         self.commandHistory = tk.Text(self, font=('Consolas',8), bg='#eee', fg='#111', state="disabled")
-        self.commandHistory.pack(side='top', fill='both')
+        self.commandHistory.pack(side='left', fill='both')
 
         # Sets up the game itself
         self.game = mainGame.Game()
@@ -157,6 +160,6 @@ class GameView(tk.Frame):
 
 root = tk.Tk()
 root.resizable(width = False, height = False)
-root.geometry('{}x{}+{}+{}'.format(500,500,50,50))
+root.geometry('{}x{}+{}+{}'.format(1000,500,50,50))
 GameView(root).pack(expand = 1, fill = 'both')
 root.mainloop()
