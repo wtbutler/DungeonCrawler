@@ -43,7 +43,6 @@ class Monster(characterObject.Character):
             tileList+=[[self.position[0]+int(math.copysign(1,yDiff)), self.position[1]]]
             tileList+=[[self.position[0]+int(math.copysign(1,yDiff)), self.position[1]+1]]
             tileList+=[[self.position[0]+int(math.copysign(1,yDiff)), self.position[1]-1]]
-        print('tileList: {}'.format(tileList))
         return [damage, tileList]
 
     def death(self):
@@ -87,16 +86,12 @@ class Monster(characterObject.Character):
     # reference - available sides = [up,right,down,left]
     def update(self, availableSides, playerPos):
         distance = self.findDistance(playerPos)
-        print('availableSides: {}'.format(availableSides))
         if distance<=9 and distance>2:
-            print('movingToPlayer')
             return ['move', self.moveToPlayer(playerPos, availableSides)]
         elif distance<=2:
-            print('attacking')
             attack = self.attack(playerPos, availableSides)
             return ['attack', attack[0], attack[1]]
             # return 'attack'+direction
         else:
-            print('movingRandom')
             return ['move', self.moveRandom(availableSides)]
             # return 'move'+direction

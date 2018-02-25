@@ -49,5 +49,4 @@ def getMapFromImage(path, image):
             if mapPix[x,y] == door:
                 tile = "--"
                 mapToReturn[y][x] = tileObjects.DoorTile()
-    print('mapName while Reading: {}'.format(mapName))
     return mapToReturn+[mapName]

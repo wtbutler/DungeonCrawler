@@ -78,7 +78,7 @@ class GameView(tk.Frame):
             elif self.game.textType=='act':
                 print(' - active command - ')
                 self.game.activeCommand()
-                self.game.updateOtherActors()
+                if self.game.textType]]'act': self.game.updateOtherActors()
             else:
                 print('invalid command \'{}\', please type another valid command'.format(turnText))
 

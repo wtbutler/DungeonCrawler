@@ -8,7 +8,6 @@ class DungeonMap():
 
     def __init__(self, mapListFromReader):
         self.mapInfo = mapListFromReader.pop(-1)
-        print('mapInfo: {}'.format(self.mapInfo))
         self.name = self.mapInfo[0]
         self.mapCoordinateList = mapListFromReader
         self.actorList = []

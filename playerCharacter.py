@@ -61,19 +61,10 @@ class PlayerCharacter(characterObject.Character):
         if direction=='right': target = [self.position[0],self.position[1]+1]
         if direction=='up': target = [self.position[0]-1,self.position[1]]
         if target!=[]: return target
-        
-    def update(self, currentMap, actorList, turnText):
+
+    def update(self, turnText):
         if turnText[0] == 'move':
-            string = 'move '+self.position+' '+turntext[1]
-            print(string)
-            return string
+            return ['move', self.move(turnText[1])]
         if turnText[0] == 'attack':
-            try:
-                if self.findDistance(self.currentActors[int(self.turnText[1])].position)<4:
-                    self.attack(self.currentActors[int(self.turnText[1])], self.currentActors)
-                else:
-                    print("Too far away!")
-                    self.textType = 'pass'
-            except (ValueError, IndexError):
-                print("invalid enemy")
-                self.textType = 'pass'
+            attack = self.attack(turnText[1])
+            return ['attack', attack[0], attack[1]]

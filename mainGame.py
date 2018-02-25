@@ -53,7 +53,6 @@ class Game():
     def loadMaps(self):
         self.dungeonMaps = {}
         for imageName in os.listdir(self.path+"maps\\"):
-            print('mapName: {}'.format(imageName))
             self.dungeonMaps[imageName[:-4]] = mapObject.DungeonMap(mapReading.getMapFromImage(self.path+"maps\\", imageName))
         self.dungeonMaps["Start"].setConnection(       [["Start", (8,12)]  ,   ["dungeon2", (2,3)]])
         self.dungeonMaps["Start"].setConnection(       [["Start",(3,18)]   ,   ["dungeon1",(9,3)]] )
@@ -146,6 +145,7 @@ class Game():
 
     # moves an actor object from their current position to a coordinate on the current map
     def move(self, actor, targetCoords):
+        if actor.position==targetCoords: return
         target=self.currentMap.tileAt(targetCoords)
         position=self.currentMap.tileAt(actor.position)
         # Target and Position are both tile objects from the relevent positions
@@ -258,36 +258,16 @@ class Game():
 
     # Performs the different active commands player
     def activeCommand(self):
-        ## DEBUG - REMOVE LATER
-        if self.debugMode == True:
-            if self.turnText[0] == "Lattack":
-                try:
-                    self.player.attack(self.currentActors[int(self.turnText[1])], self.currentActors)
-                except (ValueError, IndexError):
-                    print("invalid enemy")
-                    self.textType = 'pass'
-                    return True
-        # ^^^^^^^^^^^^^^^^^^^^^
+        decision = self.player.update(self.turnText)
 
         # Attack code
-        if self.turnText[0] == "attack":
-            try:
-                if self.player.findDistance(self.currentActors[int(self.turnText[1])].position)<4:
-                    self.player.attack(self.currentActors[int(self.turnText[1])], self.currentActors)
-                else:
-                    print("Too far away!")
-                    self.textType = 'pass'
-                    return True
-            except (ValueError, IndexError):
-                print("invalid enemy")
-                self.textType = 'pass'
-                return True
+        if decision[0]=='attack':
+            return
 
         # Defines move commands
-        if self.turnText[0] == 'move':
+        if decision[0] == 'move':
             try:
-                target = self.player.move(self.turnText[1])
-                self.move(self.player, target)
+                self.move(self.player, decision[1])
             except Exception as e:
                 print("Please input a valid dirction", e)
                 self.textType = 'pass'
