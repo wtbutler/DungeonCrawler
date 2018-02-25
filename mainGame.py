@@ -6,7 +6,6 @@ import monsterObject
 import pickle
 import chestObject
 
-# VERY IMPORTANT COMMAND: test ntolaa self.move(self.player, self.currentMap.tileAt([2,2]),[7,12])
 class Game():
     player = playerCharacter.PlayerCharacter(2,2)
     currentMap = 0
@@ -118,14 +117,15 @@ class Game():
     def loadSetup(self):
         print('Please select save...')
         for saveName in os.listdir(self.path+"saves\\"):
-            print(" "+saveName[:-4])
+            if saveName!='emp.ty':
+                print(" "+saveName[:-4])
 
     # loads the file chosen
     def load(self, loadName):
         try:
             with open(self.path+"saves\\"+loadName+".dat", 'rb') as f:
                 self.player, self.dungeonMaps, self.currentMap, self.currentActors, self.currentObjects = pickle.load(f)
-                self.player.loadFromInfo()
+                # self.player.loadFromInfo()
             self.player.teleport(self.player.position)
             self.drawMap()
             print("Successfully loaded from {}".format(loadName))
@@ -164,7 +164,6 @@ class Game():
     # attacks a list of coordinates with a set amount of damage
     def attack(self, damage, tileList):
         # give tiles as coordinates, not as tile objects
-        print('tileList: {}'.format(tileList))
         for tile in tileList:
             if self.currentMap.tileAt(tile).tileType()=='floor':
                 self.currentMap.tileAt(tile).attack(damage)
@@ -198,6 +197,12 @@ class Game():
                 if self.turnText[0] == 'end':
                     print('Are you sure you want to quit? [Y/N]')
                     return 'quit'
+                if self.turnText[0] == 'save':
+                    print('Please name your save...')
+                    return 'save'
+                if self.turnText[0] == 'load':
+                    self.loadSetup()
+                    return 'load'
                 return 'normal'
         self.textType = 'other'
         return 'normal'
@@ -283,7 +288,8 @@ class Game():
             if actor.currentLife <= 0:
                 self.currentMap.tileAt(actor.position).emptyThis()
                 self.currentActors.remove(actor)
-                self.currentMap.tileAt(actor.position).addObject(actor.death())
+                self.currentMap.addObject(actor.death())
+                print('currentMapActors after Death: {}'.format(self.currentMap.actorList))
             else:
                 decision = actor.update(self.testWalls(actor.position), self.player.position)
                 if decision[0]=='move':

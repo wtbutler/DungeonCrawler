@@ -27,7 +27,7 @@ class DungeonMap():
         else:
             print("not possible")
 
-    def addObject(self, location, newObject):
+    def addObject(self, newObject):
         location = newObject.position
         if self.tileAt(location).canPlace():
             self.objectList+=[newObject]

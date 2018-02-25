@@ -41,12 +41,8 @@ class PlayerCharacter(characterObject.Character):
             if direction=='up':
                 tileList += [[self.position[0]-1,self.position[1]+1]]
                 tileList += [[self.position[0]-1,self.position[1]-1]]
-        print('tileList of Player: {}'.format(tileList))
         if tileList!=[]: return [damage, tileList]
         return ['error', 'error']
-
-
-
 
     def loadFromInfo(self):
         self.name, self.position, self.maxLife, self.currentLife, self.level, self.icon = self.info
