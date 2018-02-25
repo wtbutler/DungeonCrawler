@@ -61,6 +61,7 @@ class GameView(tk.Frame):
 
     def entryField(self, Event):
         turnText = self.textField.get()
+        print('turnText: {}'.format(turnText))
         if len(self.prevCommands)==0 or not(len(turnText)==0 or self.prevCommands[-1]==turnText):
             self.prevCommands+=[turnText]
         self.prevSearchKey = 0

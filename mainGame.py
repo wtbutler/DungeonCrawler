@@ -53,7 +53,7 @@ class Game():
     def loadMaps(self):
         self.dungeonMaps = {}
         for imageName in os.listdir(self.path+"maps\\"):
-            print(imageName)
+            print('mapName: {}'.format(imageName))
             self.dungeonMaps[imageName[:-4]] = mapObject.DungeonMap(mapReading.getMapFromImage(self.path+"maps\\", imageName))
         self.dungeonMaps["Start"].setConnection(       [["Start", (8,12)]  ,   ["dungeon2", (2,3)]])
         self.dungeonMaps["Start"].setConnection(       [["Start",(3,18)]   ,   ["dungeon1",(9,3)]] )
@@ -135,7 +135,6 @@ class Game():
 
     # Returns walls for non-player stuff [up, right, down, left]
     def testWalls(self, position):
-        print(position)
         testables = [self.currentMap.tileAt([position[0]-1, position[1]]),
                      self.currentMap.tileAt([position[0], position[1]+1]),
                      self.currentMap.tileAt([position[0]+1, position[1]]),
@@ -165,11 +164,14 @@ class Game():
     # attacks a list of coordinates with a set amount of damage
     def attack(self, damage, tileList):
         # give tiles as coordinates, not as tile objects
+        print('tileList: {}'.format(tileList))
         for tile in tileList:
-            self.currentMap.tileAt(tile).attack(damage)
+            if self.currentMap.tileAt(tile).tileType()=='floor':
+                self.currentMap.tileAt(tile).attack(damage)
         print('toMap')
         for tile in tileList:
-            self.currentMap.tileAt(tile).default()
+            if self.currentMap.tileAt(tile).tileType()=='floor':
+                self.currentMap.tileAt(tile).default()
 
     # Takes the input text and matches it to one of the members of the command list
     def interpret(self, rawText):
@@ -300,8 +302,10 @@ class Game():
                 self.currentMap.tileAt(actor.poistion).addObject(actor.death())
             else:
                 decision = actor.update(self.testWalls(actor.position), self.player.position)
-                print(decision)
+                print('decision: {}'.format(decision))
                 if decision[0]=='move':
                     self.move(actor, decision[1])
-            print(actor.name)
+                if decision[0]=='attack':
+                    self.attack(decision[1], decision[2])
+            print('monsterName: {}'.format(actor.name))
             print('toMap')

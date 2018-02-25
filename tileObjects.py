@@ -13,8 +13,9 @@ class FloorTile(tile.Tile):
         return self.icon
 
     def attack(self, damage):
+        print('actor taking damage: {}'.format(self.actor))
         self.attacked=True
-        self.actor.takeDamage(damage)
+        if self.actor!=0: self.actor.takeDamage(damage)
     def default(self):
         self.attacked=False
     def isEmpty(self):

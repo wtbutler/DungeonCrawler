@@ -18,27 +18,33 @@ class Monster(characterObject.Character):
         self.maxLife = self.maxLifeModifier * level
         self.currentLife = self.maxLife
         self.items = items
+        self.defense = self.baseDefence
         if health != -1:
             self.currentLife = health
             if self.currentLife>self.maxLife: self.maxLife = health
 
-    def attack(self, playerPos, broad=False):
+    def attack(self, playerPos):
         tileList = []
-        if broad:
-            xDif = playerPos[0]-self.position[0]
-            yDif = playerPos[1]-self.position[1]
-            if xDiff>0 and yDiff!=0:
-                tileList+=[self.position[0], self.position[1]+int(math.copysign(1,xDiff))]
-                tileList+=[self.position[0]+1, self.position[1]+int(math.copysign(1,xDiff))]
-                tileList+=[self.position[0]-1, self.position[1]+int(math.copysign(1,xDiff))]
-            # Checks if it should move up or down
-            elif dy!=0 and (dy<0 and availableSides[0]) or (dy>0 and availableSides[2]):
-                target[0]+=int(math.copysign(1,dy))
-            # Checks if it should move right or left again in case it couldn't move left or right
-            elif (dx>0 and availableSides[1]) or (dx<0 and availableSides[3]):
-                target[1]+=int(math.copysign(1,dx))
-
-        return [self.baseAttack, tileList]
+        damage = self.baseAttack
+        xDiff = playerPos[1]-self.position[1]
+        yDiff = playerPos[0]-self.position[0]
+        if xDiff!=0 and yDiff==0:
+            tileList+=[[self.position[0], self.position[1]+int(math.copysign(1,xDiff))]]
+            return [damage, tileList]
+        if xDiff==0 and yDiff!=0:
+            tileList+=[[self.position[0]+int(math.copysign(1,yDiff)), self.position[1]]]
+            return [damage, tileList]
+        damage *= .5
+        if xDiff!=0:
+            tileList+=[[self.position[0], self.position[1]+int(math.copysign(1,xDiff))]]
+            tileList+=[[self.position[0]+1, self.position[1]+int(math.copysign(1,xDiff))]]
+            tileList+=[[self.position[0]-1, self.position[1]+int(math.copysign(1,xDiff))]]
+        else:
+            tileList+=[[self.position[0]+int(math.copysign(1,yDiff)), self.position[1]]]
+            tileList+=[[self.position[0]+int(math.copysign(1,yDiff)), self.position[1]+1]]
+            tileList+=[[self.position[0]+int(math.copysign(1,yDiff)), self.position[1]-1]]
+        print('tileList: {}'.format(tileList))
+        return [damage, tileList]
 
     def death(self):
         return chestObject.Chest(self.position, items = self.items)
@@ -64,10 +70,10 @@ class Monster(characterObject.Character):
         dy = playerPos[0]-self.position[0]
         target = [0,0]
         # Checks if right and left are available and if it has priority to move in that direction
-        if dx!=0 and (abs(dx)>=abs(dy) and dx>0 and availableSides[1]) or (abs(dx)>=abs(dy) and dx<0 and availableSides[3]):
+        if abs(dx)>=abs(dy) and (dx>0 and availableSides[1]) or (dx<0 and availableSides[3]):
             target[1]+=int(math.copysign(1,dx))
         # Checks if it should move up or down
-        elif dy!=0 and (dy<0 and availableSides[0]) or (dy>0 and availableSides[2]):
+        elif (dy<0 and availableSides[0]) or (dy>0 and availableSides[2]):
             target[0]+=int(math.copysign(1,dy))
         # Checks if it should move right or left again in case it couldn't move left or right
         elif (dx>0 and availableSides[1]) or (dx<0 and availableSides[3]):
@@ -75,19 +81,22 @@ class Monster(characterObject.Character):
         # Reaches here if it cannot move closer to the actorList[0] but still sees it,
         else:
             return self.moveRandom(availableSides)
-        return [self.position[0]-target[0], self.position[1]-target[1]]
+        return [self.position[0]+target[0], self.position[1]+target[1]]
         # return 'move'+direction
 
-
-# reference - available sides = [up,right,down,left]
+    # reference - available sides = [up,right,down,left]
     def update(self, availableSides, playerPos):
         distance = self.findDistance(playerPos)
+        print('availableSides: {}'.format(availableSides))
         if distance<=9 and distance>2:
-            return ['move', self.moveToPlayer(availableSides, playerPos)]
+            print('movingToPlayer')
+            return ['move', self.moveToPlayer(playerPos, availableSides)]
         elif distance<=2:
+            print('attacking')
             attack = self.attack(playerPos)
             return ['attack', attack[0], attack[1]]
             # return 'attack'+direction
         else:
+            print('movingRandom')
             return ['move', self.moveRandom(availableSides)]
             # return 'move'+direction
