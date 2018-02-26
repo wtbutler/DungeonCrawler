@@ -40,7 +40,7 @@ class GameView(tk.Frame):
 
         # Sets up cache of previous commands
         self.commandHistory = tk.Text(self, font=('Consolas',8), bg='#eee', fg='#111', state="disabled")
-        self.commandHistory.pack(side='left', fill='both')
+        self.commandHistory.pack(side='bottom', fill='both', expand=1)
 
         # Sets up the game itself
         self.game = mainGame.Game()
@@ -64,11 +64,11 @@ class GameView(tk.Frame):
 
     def entryField(self, Event):
         turnText = self.textField.get()
-        print('turnText: {}'.format(turnText))
         if len(self.prevCommands)==0 or not(len(turnText)==0 or self.prevCommands[-1]==turnText):
             self.prevCommands+=[turnText]
         self.prevSearchKey = 0
         if self.gameState == 'normal':
+            print('turnText: {}'.format(turnText))
             self.gameState = self.game.interpret(turnText)
 
             if self.game.textType == 'pass':

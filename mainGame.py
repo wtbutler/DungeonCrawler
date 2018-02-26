@@ -24,10 +24,8 @@ class Game():
         ['down',0,'direction to move'],
         ["attack",'act','attack in a direction'],
         ['broad', 5,'attack 3 squares weakly in a direction'],
-        ["info",'pass','displays position about a target','-TESTING ONLY-'],
-        ["mapinfo",'pass','displays information about the map','-TESTING ONLY-'],
+        ['check', 'pass', 'Give information about the object in a given direction'],
         ["test",'pass','run a command of python script','-TESTING ONLY-'],
-        ["items",'pass','print the currently held items'],
         ["help",'pass','print a list of commands'],
         ["save",'pass','save the current game'],
         ["load",'pass','load a previous game'],
@@ -102,32 +100,6 @@ class Game():
         for i in temporaryMap:
             tempList += [''.join([str(x) for x in i])]
         return '\n'.join(tempList)
-
-    # Def save functionality
-    def save(self, saveName):
-        if saveName != "":
-            with open(self.path+"saves\\"+saveName+'.dat', 'wb') as f:
-                pickle.dump([self.player, self.dungeonMaps, self.currentMap, self.currentActors, self.currentObjects], f)
-        else:
-            print("Please enter a name for your save file")
-
-    # Shows all saved files for selection to load
-    def loadSetup(self):
-        print('Please select save...')
-        for saveName in os.listdir(self.path+"saves\\"):
-            if saveName!='emp.ty':
-                print(" "+saveName[:-4])
-
-    # loads the file chosen
-    def load(self, loadName):
-        try:
-            with open(self.path+"saves\\"+loadName+".dat", 'rb') as f:
-                self.player, self.dungeonMaps, self.currentMap, self.currentActors, self.currentObjects = pickle.load(f)
-            self.player.teleport(self.player.position)
-            self.drawMap()
-            print("Successfully loaded from {}".format(loadName))
-        except:
-            print("invalid load file")
 
     # Returns walls for non-player stuff [up, right, down, left]
     def testWalls(self, position):
@@ -204,24 +176,62 @@ class Game():
         self.textType = 'other'
         return 'normal'
 
+    def check(self, direction):
+        position = self.player.position
+        target = []
+        if direction=='left': target = [[position[0],position[1]-1]]
+        if direction=='down': target = [[position[0]+1,position[1]]]
+        if direction=='right': target = [[position[0],position[1]+1]]
+        if direction=='up': target = [[position[0]-1,position[1]]]
+        if direction=='me': target = position
+        if target!=[]: self.currentMap.tileAt(target).check()
+        print('Please give a valid direction')
+
+    # Prints a list of all commands available to the player
+    def help(self):
+        for command in self.keywords:
+            if self.debugMode == False:
+                if len(command) == 3:
+                    if command[1] == 'pass' or command[1]=='act':
+                        print(" - "+command[0] + ' : '+" ".join(command[2:]))
+                    else:
+                        print(" -   "+command[0]+ ' : ' + " ".join(command[2:]))
+            else:
+                if command[1] == 'pass' or command[1]=='act':
+                    print(" - "+command[0] + ' : '+" ".join(command[2:]))
+                else:
+                    print(" -   "+command[0]+ ' : ' + " ".join(command[2:]))
+
+    # Def save functionality
+    def save(self, saveName):
+        if saveName != "":
+            with open(self.path+"saves\\"+saveName+'.dat', 'wb') as f:
+                pickle.dump([self.player, self.dungeonMaps, self.currentMap, self.currentActors, self.currentObjects], f)
+        else:
+            print("Please enter a name for your save file")
+
+    # Shows all saved files for selection to load
+    def loadSetup(self):
+        print('Please select save...')
+        for saveName in os.listdir(self.path+"saves\\"):
+            if saveName!='emp.ty':
+                print(" "+saveName[:-4])
+
+    # loads the file chosen
+    def load(self, loadName):
+        try:
+            with open(self.path+"saves\\"+loadName+".dat", 'rb') as f:
+                self.player, self.dungeonMaps, self.currentMap, self.currentActors, self.currentObjects = pickle.load(f)
+            self.player.teleport(self.player.position)
+            self.drawMap()
+            print("Successfully loaded from {}".format(loadName))
+        except:
+            print("invalid load file")
+
     # Performs the different passive commands player
     def passiveCommand(self):
         # Code for passive commands
         ## DEBUG information and commands - REMOVE LATER
-        if self.debugMode == True:
-            if self.turnText[0] == "mapinfo":
-                print(self.currentMap.mapInfo)
-
-            if self.turnText[0] == "info":
-                try:
-                    print(self.currentActors[int(self.turnText[1])].info)
-                except (ValueError, IndexError):
-                    print("Invalid selection")
-                    self.drawInfo()
-
-            if self.turnText[0] == "position":
-                print(self.player.position)
-
         if self.turnText[0] == "test":
             if self.debugMode == True:
                 try:
@@ -230,30 +240,16 @@ class Game():
                     print('\nexecuted')
                 except Exception as e:
                     print('you typed it wrong:\n{}'.format(e))
-                    return True
             else:
                 print("Unknown command 'test', please try again")
-                return True
-
         # ^^^^^^^^^^^^^^^^^^^^^
 
         # Regular Commands
-        if self.turnText[0] == "items":
-            print(self.player.items)
+        if self.turnText[0] == "check":
+            if len(turnText)>1: self.check(self.turnText[1])
 
         if self.turnText[0] == "help":
-            for command in self.keywords:
-                if self.debugMode == False:
-                    if len(command) == 3:
-                        if command[1] == 'pass' or command[1]=='act':
-                            print(" - "+command[0] + ' : '+" ".join(command[2:]))
-                        else:
-                            print(" -   "+command[0]+ ' : ' + " ".join(command[2:]))
-                else:
-                    if command[1] == 'pass' or command[1]=='act':
-                        print(" - "+command[0] + ' : '+" ".join(command[2:]))
-                    else:
-                        print(" -   "+command[0]+ ' : ' + " ".join(command[2:]))
+            self.help()
 
     # Performs the different active commands player
     def activeCommand(self):
@@ -270,20 +266,22 @@ class Game():
         # Defines move commands
         if decision[0] == 'move':
             try:
+                print(decision)
                 self.move(self.player, decision[1])
             except Exception as e:
                 print("Please input a valid dirction", e)
                 self.textType = 'pass'
+
         print('toMap')
 
     def updateOtherActors(self):
+        toDel=[]
         for actor in self.currentActors:
             decision = ''
             if actor.currentLife <= 0:
                 self.currentMap.tileAt(actor.position).emptyThis()
-                self.currentActors.remove(actor)
+                toDel+=[actor]
                 self.currentMap.addObject(actor.death())
-                print('currentMapActors after Death: {}'.format(self.currentMap.actorList))
             else:
                 decision = actor.update(self.testWalls(actor.position), self.player.position)
                 if decision[0]=='move':
@@ -291,3 +289,5 @@ class Game():
                 if decision[0]=='attack':
                     self.attack(decision[1], decision[2])
             print('toMap')
+        for actor in toDel:
+            self.currentActors.remove(actor)

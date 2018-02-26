@@ -45,7 +45,10 @@ class Monster(characterObject.Character):
         return [damage, tileList]
 
     def death(self):
-        return chestObject.Chest(self.position, items = self.items)
+        return chestObject.Chest(self.position, name = self.name, items = self.items)
+
+    def giveInfo(self):
+        print('A big scary {}!'.format(self.name))
 
     def moveRandom(self, availableSides):
         options = [0]
