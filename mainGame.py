@@ -176,15 +176,18 @@ class Game():
         self.textType = 'other'
         return 'normal'
 
+    # Prints info about something in a direction
     def check(self, direction):
         position = self.player.position
         target = []
-        if direction=='left': target = [[position[0],position[1]-1]]
-        if direction=='down': target = [[position[0]+1,position[1]]]
-        if direction=='right': target = [[position[0],position[1]+1]]
-        if direction=='up': target = [[position[0]-1,position[1]]]
+        if direction=='left': target = [position[0],position[1]-1]
+        if direction=='down': target = [position[0]+1,position[1]]
+        if direction=='right': target = [position[0],position[1]+1]
+        if direction=='up': target = [position[0]-1,position[1]]
         if direction=='me': target = position
-        if target!=[]: self.currentMap.tileAt(target).check()
+        if target!=[]:
+            self.currentMap.tileAt(target).check()
+            return
         print('Please give a valid direction')
 
     # Prints a list of all commands available to the player
@@ -246,7 +249,7 @@ class Game():
 
         # Regular Commands
         if self.turnText[0] == "check":
-            if len(turnText)>1: self.check(self.turnText[1])
+            if len(self.turnText)>1: self.check(self.turnText[1])
 
         if self.turnText[0] == "help":
             self.help()
@@ -274,6 +277,7 @@ class Game():
 
         print('toMap')
 
+    # Performs all actions for other actors
     def updateOtherActors(self):
         toDel=[]
         for actor in self.currentActors:

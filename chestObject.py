@@ -12,5 +12,13 @@ class Chest(genO.GeneralObject):
 
     def giveInfo(self):
         print('A wooden chest that contains:')
+        if len(self.items)==0:
+            print(' - Nothing!')
+            return
         for i in range(len(self.items)):
-            print(' - {} {}'.format(i, items[i]))
+            print(' - {} {}'.format(i, self.items[i]))
+
+    def take(self, itemIndex):
+        item = self.items.pop(itemIndex)
+        self.giveInfo
+        return item

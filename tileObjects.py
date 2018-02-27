@@ -25,7 +25,7 @@ class FloorTile(tile.Tile):
     def emptyThis(self):
         self.actor = 0
     def check(self):
-        if self.isEmpty:
+        if self.isEmpty():
             print('A piece of empty floor')
         else:
             self.actor.giveInfo()
