@@ -1,10 +1,10 @@
 # DungeonCrawler
 A simple text-adventure game I've been working on from scratch.
 
-Required Libraries:
-    * Tkinter
-    * Pickle
-    * Pillow
+Required Libraries:  
+    * Tkinter  
+    * Pickle  
+    * Pillow  
 
 To install, just have Python 3.6, and clone the repo. Then you should be able to run `filethatruns.py` and it should work.
 
