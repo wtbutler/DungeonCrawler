@@ -42,6 +42,21 @@ class PlayerCharacter(characterObject.Character):
                 defense+=spell[1]
         return defense
 
+    def dropItem(self, itemIndex):
+        if itemIndex>0 and itemIndex<=len(self.itemList):
+            print('You dropped {}'.format(self.itemList.pop(itemIndex-1)))
+        else:
+            print('That is not an item in your inventory')
+
+    def useItem(self, itemIndex):
+        if itemIndex>0 and itemIndex<=len(self.itemList):
+            if self.itemList[itemIndex-1].itemType=='consumable':
+                self.itemList[itemIndex-1].useThis(self)
+            else:
+                print('Please try to use a consumable item')
+        else:
+            print('That is not an item in your inventory')
+
     def attack(self, direction, broad=False):
         damage = self.getAttack()
         tileList = []

@@ -83,10 +83,9 @@ class GameView(tk.Frame):
             else:
                 print('invalid command \'{}\', please type another valid command'.format(turnText))
 
-            self.after(0, self.toggleInteraction)
+            self.after(0, self.toggleInteraction(False))
             self.utils.addMap(self.game.drawMap())
             self.after(200, self.drawFromCache)
-
         elif self.utils.gameState == 'save':
             #code for save
             self.game.save(turnText)
@@ -110,19 +109,19 @@ class GameView(tk.Frame):
         if len(self.utils.mapCache)>=1:
             self.after(200,self.drawFromCache)
         else:
-            self.toggleInteraction()
+            self.toggleInteraction(True)
 
     # Possibly remove both
-    def toggleInteraction(self):
-        self.toggle_disable(self.textField)
-        self.toggle_disable(self.saveButton)
-        self.toggle_disable(self.loadButton)
-        self.toggle_disable(self.quitButton)
+    def toggleInteraction(self, state):
+        self.toggle_disable(self.textField, state)
+        self.toggle_disable(self.saveButton, state)
+        self.toggle_disable(self.loadButton, state)
+        self.toggle_disable(self.quitButton, state)
 
-    def toggle_disable(self, widgit):
-        if widgit['state'] == 'normal':
+    def toggle_disable(self, widgit, state):
+        if not(state):
             widgit.configure(state='disabled',fg='#555',bg='#aaa')
-        elif widgit['state'] == 'disabled':
+        if state:
             widgit.configure(state='normal',fg='#000',bg='#eee')
 
     def saveGame(self):

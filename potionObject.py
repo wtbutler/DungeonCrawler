@@ -14,10 +14,13 @@ class Consumable(itemObject.Item):
         self.duration = duration
 
     def __str__(self):
-        if duration==None: return 'A {} that increases {} by {}'.format(self.name, self.attriute, self.value)
+        return self.name
+
+    def __repr__(self):
+        if self.duration==None: return 'A {} that increases {} by {}'.format(self.name, self.attriute, self.value)
         return 'A {} that boosts {} by {} for {}'.format(self.name, self.attriute, self.value, self.duration)
 
-    def drinkThis(self, player):
+    def useThis(self, player):
         if self.duration==None:
             if self.attribute=='currentLife':
                 player.currentLife+=self.value
@@ -25,9 +28,9 @@ class Consumable(itemObject.Item):
                 player.maxLife+=self.value
             if self.attribute=='baseAttack':
                 player.baseAttack+=self.value
-            if self.attriute=='baseDefense':
+            if self.attribute=='baseDefense':
                 player.baseDefense+=self.value
             if self.attribute=='experience':
                 player.gainExperience(self.value)
             return
-        player.enchantmentList += [self.attriute, self.value, self.duration]
+        player.enchantmentList += [self.attribute, self.value, self.duration]

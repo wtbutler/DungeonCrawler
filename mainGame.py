@@ -6,6 +6,7 @@ import monsterObject
 import pickle
 import chestObject
 import util
+import potionObject
 
 class Game():
     player = 0
@@ -25,8 +26,11 @@ class Game():
         ['down',0,'direction to move \'down\''],
         ["attack",'act','attack in a direction \'attack <type> <direction>\''],
         ['broad', 5,'attack 3 squares weakly in a direction \'broad <direction>\''],
-        ['check', 'pass', 'Give information about the object in a given direction \'check <direction>\''],
+        ['check', 'pass', 'Give information about a given direction \'check <direction>\''],
         ['take', 'pass', 'Loot or destroy a chest \'take <direction> <item #>\''],
+        ['inv', 'pass', 'Shows your inventory \'inv\''],
+        ['use', 'pass', 'Uses a consumable item from your inventory \'use <item #>\''],
+        ['drop', 'pass', 'Removes an item from your inventory forever \'drop <item #>\''],
         ["test",'pass','run a command of python script','-TESTING ONLY-'],
         ["help",'pass','print a list of commands'],
         ["save",'pass','save the current game'],
@@ -61,8 +65,11 @@ class Game():
 
     ## DEBUG - REMOVE LATER - spawns enemies in rooms
     def debugSpace(self):
-        self.dungeonMaps["Start"].addCreature(monsterObject.Monster("defaultName",[6,2], 1, items = ["Burning Sword", "Healing Potion"]))
-        self.dungeonMaps["Start"].addCreature(monsterObject.Monster("defaultName2",[7,2], 1, items = ["Burning Sword", "Healing Potion"]))
+        self.dungeonMaps["Start"].addCreature(monsterObject.Monster("defaultName",[6,2], 1, items = [
+                                                    potionObject.Consumable('Healing Potion', 'currentLife', 5)]))
+        self.dungeonMaps["Start"].addCreature(monsterObject.Monster("defaultName2",[7,2], 1, items = [
+                                                    "Burning Sword",
+                                                    "Healing Potion"]))
         self.dungeonMaps["dungeon1"].addCreature(monsterObject.Monster("defaultName3",[6,5], 2))
         return
     # ^^^^^^^^^^^^^^^^^^
@@ -225,7 +232,7 @@ class Game():
                 print('You destroyed the empty chest.')
                 return
             self.player.addItem(item)
-        except IndexError as e:
+        except (IndexError, ValueError) as e:
             print('Please enter a valid item number, {}'.format(repr(e)))
             return
 
@@ -292,8 +299,31 @@ class Game():
 
         if self.turnText[0] == "take":
             self.takeItem(self.turnText[1])
+
         if self.turnText[0] == "help":
             self.help()
+
+        if self.turnText[0] == 'inv':
+            for i in range(len(self.player.itemList)):
+                print(' - {} {}'.format(i+1, repr(self.player.itemList[i])))
+
+        if self.turnText[0] == 'use':
+            try:
+                itemIndex = int(self.turnText[1])
+            except ValueError as e:
+                print('Please enter a valid number')
+                return
+            print('itemIndex: {}'.format(itemIndex))
+            self.player.useItem(itemIndex)
+
+        if self.turnText[0] == 'drop':
+            try:
+                itemIndex = int(self.turnText[1])
+            except ValueError as e:
+                print('Please enter a valid number')
+                return
+            print('itemIndex: {}'.format(itemIndex))
+            self.player.dropItem(itemIndex)
 
     # Performs the different active commands player
     def activeCommand(self):
