@@ -5,6 +5,7 @@ import mapObject
 import monsterObject
 import pickle
 import chestObject
+import util
 
 class Game():
     player = 0
@@ -16,6 +17,7 @@ class Game():
     debugMode = False
     path = ""
     dungeonMaps = {}
+    utils = ''
     keywords = [
         ["move",'act','move around the map'],
         ['right',0,'direction to move'],
@@ -39,6 +41,7 @@ class Game():
         self.loadMaps()
         self.debugSpace()
         self.mapChange(("Start", (2,2)))
+        self.utils = util.TextControl()
 
     # Locates dungeon maps
     def findPath(self):
@@ -136,7 +139,7 @@ class Game():
         for tile in tileList:
             if self.currentMap.tileAt(tile).tileType()=='floor':
                 self.currentMap.tileAt(tile).attack(damage)
-        print('toMap')
+        self.utils.addMap(self.drawMap())
         for tile in tileList:
             if self.currentMap.tileAt(tile).tileType()=='floor':
                 self.currentMap.tileAt(tile).default()
@@ -275,7 +278,7 @@ class Game():
                 print("Please input a valid dirction", e)
                 self.textType = 'pass'
 
-        print('toMap')
+        self.utils.addMap(self.drawMap())
 
     # Performs all actions for other actors
     def updateOtherActors(self):
@@ -292,6 +295,6 @@ class Game():
                     self.move(actor, decision[1])
                 if decision[0]=='attack':
                     self.attack(decision[1], decision[2])
-            print('toMap')
+            self.utils.addMap(self.drawMap())
         for actor in toDel:
             self.currentActors.remove(actor)

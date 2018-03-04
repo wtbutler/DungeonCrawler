@@ -2,10 +2,10 @@ import mainGame
 import tkinter as tk
 import time
 import sys
+import util
 
 class GameView(tk.Frame):
     # gameState can be: normal, save, load
-    gameState = 'normal'
     prevCommands = []
     prevSearchKey = 0
     mapCache = []
@@ -15,6 +15,7 @@ class GameView(tk.Frame):
 
         # Redirects all prints to the text field
         sys.stdout.write = self.myPrint
+        self.utils = util.TextControl()
 
         self.mapCache = []
 
@@ -67,9 +68,9 @@ class GameView(tk.Frame):
         if len(self.prevCommands)==0 or not(len(turnText)==0 or self.prevCommands[-1]==turnText):
             self.prevCommands+=[turnText]
         self.prevSearchKey = 0
-        if self.gameState == 'normal':
+        if self.utils.gameState == 'normal':
             print('turnText: {}'.format(turnText))
-            self.gameState = self.game.interpret(turnText)
+            self.utils.gameState = self.game.interpret(turnText)
 
             if self.game.textType == 'pass':
                 print(' - passive command - ')
@@ -83,20 +84,20 @@ class GameView(tk.Frame):
                 print('invalid command \'{}\', please type another valid command'.format(turnText))
 
             self.after(0, self.toggleInteraction)
-            print('toMap')
+            self.utils.addMap(self.game.drawMap())
             self.after(200, self.drawFromCache)
 
-        elif self.gameState == 'save':
+        elif self.utils.gameState == 'save':
             #code for save
             self.game.save(turnText)
             self.textMap.set(self.game.drawMap())
-            self.gameState = 'normal'
-        elif self.gameState == 'load':
+            self.utils.gameState = 'normal'
+        elif self.utils.gameState == 'load':
             #code for load:
             self.game.load(turnText)
             self.textMap.set(self.game.drawMap())
-            self.gameState = 'normal'
-        elif self.gameState == 'quit':
+            self.utils.gameState = 'normal'
+        elif self.utils.gameState == 'quit':
             # code for quitting
             # if turnText=='yes' or turnText=='y':
                 global root
@@ -104,8 +105,8 @@ class GameView(tk.Frame):
         self.textField.delete(0, 'end')
 
     def drawFromCache(self):
-        self.textMap.set(self.mapCache.pop(0))
-        if len(self.mapCache)>=1:
+        self.textMap.set(self.utils.mapCache.pop(0))
+        if len(self.utils.mapCache)>=1:
             self.after(200,self.drawFromCache)
         else:
             self.toggleInteraction()
@@ -125,15 +126,15 @@ class GameView(tk.Frame):
 
     def saveGame(self):
         print('Please name your save...')
-        self.gameState = 'save'
+        self.utils.gameState = 'save'
 
     def loadGame(self):
         self.game.loadSetup()
-        self.gameState = 'load'
+        self.utils.gameState = 'load'
 
     def quit(self):
         print('Are you sure you want to quit? [Y/N]')
-        self.gameState = 'quit'
+        self.utils.gameState = 'quit'
 
     def lookForPrev(self, Event):
         if Event.keycode==38:
@@ -146,9 +147,6 @@ class GameView(tk.Frame):
             self.textField.insert(0, self.prevCommands[-1*self.prevSearchKey])
 
     def myPrint(self, text):
-        if text=='toMap':
-            self.mapCache = self.mapCache + [self.game.drawMap()]
-            return
         self.printToView(text)
 
     def printToView(self, printText):
