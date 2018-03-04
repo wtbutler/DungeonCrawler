@@ -13,7 +13,6 @@ class FloorTile(tile.Tile):
             return self.actor.icon
         return self.icon
     def attack(self, damage):
-        print('actor taking damage: {}'.format(self.actor))
         self.attacked=True
         if self.actor!=0: self.actor.takeDamage(damage)
     def default(self):

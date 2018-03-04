@@ -204,18 +204,30 @@ class Game():
             print('Please give a valid direction')
             return
         chest = self.currentMap.tileAt(target).actor
+        if not(type(chest) is chestObject.Chest):
+            print('There is not a chest there!')
+            return
         try:
-            print('turnText'.format(self.turnText))
-            print('turnText[2]:'.format(self.turnText[2]))
+            # Takes all items from chest and then destroys it
+            if self.turnText[2]=='all':
+                while len(chest.items)>=0:
+                    item = chest.take(1, takeAll=True)
+                    if item=='breakThis':
+                        self.currentMap.tileAt(target).emptyThis()
+                        print('You destroyed the empty chest.')
+                        return
+                    self.player.addItem(item)
+
             item = chest.take(int(self.turnText[2]))
+            if item==None: raise IndexError('Invalid item from chest')
             if item=='breakThis':
                 self.currentMap.tileAt(target).emptyThis()
                 print('You destroyed the empty chest.')
-        except Exception as e:
-            print('Please enter a valid item number, {}'.format(e))
+                return
+            self.player.addItem(item)
+        except IndexError as e:
+            print('Please enter a valid item number, {}'.format(repr(e)))
             return
-        self.player.addItem(item)
-        return
 
 
     # Prints a list of all commands available to the player
@@ -279,7 +291,7 @@ class Game():
             if len(self.turnText)>1: self.check(self.turnText[1])
 
         if self.turnText[0] == "take":
-            if len(self.turnText)>2: self.takeItem(self.turnText[1])
+            self.takeItem(self.turnText[1])
         if self.turnText[0] == "help":
             self.help()
 
