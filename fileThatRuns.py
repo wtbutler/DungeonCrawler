@@ -79,14 +79,12 @@ class GameView(tk.Frame):
 
         # Sets up a changing string for the player info bar
         self.nameOfPlayer = tk.StringVar()
-        self.nameOfPlayer.set(self.game.player.name)
         self.playerName.configure(textvariable=self.nameOfPlayer)
         self.levelOfPlayer = tk.StringVar()
-        self.levelOfPlayer.set(self.game.player.level)
         self.playerLevel.configure(textvariable=self.levelOfPlayer)
         self.lifeOfPlayer = tk.StringVar()
-        self.lifeOfPlayer.set('{}/{}'.format(self.game.player.currentLife, self.game.player.maxLife))
         self.playerLife.configure(textvariable=self.lifeOfPlayer)
+        self.updatePlayerInfo()
 
     def entryField(self, Event):
         turnText = self.textField.get()
@@ -129,11 +127,6 @@ class GameView(tk.Frame):
         self.utils.addMap(self.game.drawMap())
         self.after(200, self.drawFromCache)
 
-        self.nameOfPlayer.set(self.game.player.name)
-
-        self.levelOfPlayer.set(self.game.player.level)
-
-        self.lifeOfPlayer.set('{}/{}'.format(self.game.player.currentLife, self.game.player.maxLife))
 
     def drawFromCache(self):
         self.textMap.set(self.utils.mapCache.pop(0))
@@ -141,6 +134,12 @@ class GameView(tk.Frame):
             self.after(200,self.drawFromCache)
         else:
             self.toggleInteraction(True)
+            self.updatePlayerInfo()
+
+    def updatePlayerInfo(self):
+        self.nameOfPlayer.set('Name: {}'.format(self.game.player.name))
+        self.levelOfPlayer.set('Level: {}'.format(self.game.player.level))
+        self.lifeOfPlayer.set('Life: {}/{}'.format(self.game.player.currentLife, self.game.player.maxLife))
 
     # Possibly remove both
     def toggleInteraction(self, state):
