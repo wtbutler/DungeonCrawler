@@ -45,7 +45,6 @@ class PlayerCharacter(characterObject.Character):
 
     def addItem(self, item):
         self.itemList += [item]
-        print('You picked up {}'.format(item))
     def equip(self, item):
         if item.itemType=="Weapon":
             self.weapon = item
@@ -73,7 +72,6 @@ class PlayerCharacter(characterObject.Character):
         if target!=[]: return target
 
     def update(self, turnText):
-        print('turnText in Player: {}'.format(turnText))
         if turnText[0] == 'move':
             return ['move', self.move(turnText[1])]
         if turnText[0] == 'attack':

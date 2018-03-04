@@ -3,7 +3,6 @@ class DungeonMap():
     name = ""
     mapCoordinateList = []
     actorList = []
-    objectList = []
 
     def __init__(self, mapListFromReader):
         self.name = mapListFromReader.pop(-1)

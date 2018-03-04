@@ -102,6 +102,7 @@ class GameView(tk.Frame):
             # if turnText=='yes' or turnText=='y':
             global root
             root.quit()
+        print('\n')
         self.textField.delete(0, 'end')
 
     def drawFromCache(self):

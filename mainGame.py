@@ -11,7 +11,6 @@ class Game():
     player = 0
     currentMap = 0
     currentActors = []
-    currentObjects = []
     textType = "other"
     turnText = ""
     debugMode = False
@@ -27,7 +26,7 @@ class Game():
         ["attack",'act','attack in a direction \'attack <type> <direction>\''],
         ['broad', 5,'attack 3 squares weakly in a direction \'broad <direction>\''],
         ['check', 'pass', 'Give information about the object in a given direction \'check <direction>\''],
-        ['take', 'pass', 'Take an item from a chest in a given direction \'take <direction> <item #>\''],
+        ['take', 'pass', 'Loot a chest or destroy it if it\'s empty \'take <direction> <item #>\''],
         ["test",'pass','run a command of python script','-TESTING ONLY-'],
         ["help",'pass','print a list of commands'],
         ["save",'pass','save the current game'],
@@ -194,7 +193,7 @@ class Game():
             return
         print('Please give a valid direction')
 
-    def takeItem(self, direction, itemIndex):
+    def takeItem(self, direction):
         position = self.player.position
         target = []
         if direction=='left': target = [position[0],position[1]-1]
@@ -206,9 +205,14 @@ class Game():
             return
         chest = self.currentMap.tileAt(target).actor
         try:
-            item = chest.take(int(itemIndex))
+            print('turnText'.format(self.turnText))
+            print('turnText[2]:'.format(self.turnText[2]))
+            item = chest.take(int(self.turnText[2]))
+            if item=='breakThis':
+                self.currentMap.tileAt(target).emptyThis()
+                print('You destroyed the empty chest.')
         except Exception as e:
-            print('Please enter a valid item number')
+            print('Please enter a valid item number, {}'.format(e))
             return
         self.player.addItem(item)
         return
@@ -275,7 +279,7 @@ class Game():
             if len(self.turnText)>1: self.check(self.turnText[1])
 
         if self.turnText[0] == "take":
-            if len(self.turnText)>2: self.takeItem(self.turnText[1], self.turnText[2])
+            if len(self.turnText)>2: self.takeItem(self.turnText[1])
         if self.turnText[0] == "help":
             self.help()
 
@@ -294,7 +298,6 @@ class Game():
         # Defines move commands
         if decision[0] == 'move':
             try:
-                print(decision)
                 self.move(self.player, decision[1])
             except Exception as e:
                 print("Please input a valid dirction", e)
