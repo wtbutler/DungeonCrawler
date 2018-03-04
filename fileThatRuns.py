@@ -39,6 +39,10 @@ class GameView(tk.Frame):
         self.textField.bind('<Key-Down>', self.lookForPrev)
         self.textField.focus_set()
 
+        # Sets up a bar with information about the player
+        self.playerInfo = tk.Frame(self, bg='#eee')
+        self.playerInfo.pack(side='top', fill='x')
+
         # Sets up cache of previous commands
         self.commandHistory = tk.Text(self, font=('Consolas',8), bg='#eee', fg='#111', state="disabled")
         self.commandHistory.pack(side='bottom', fill='both', expand=1)
@@ -58,10 +62,31 @@ class GameView(tk.Frame):
         self.quitButton = tk.Button(self.toolbar, text='Quit', command=self.quit, fg = '#000', bg = '#eee')
         self.quitButton.pack(side='right')
 
+        # Adds labels showing player name, level, and health to infoBar
+        self.playerName = tk.Label(self.playerInfo, text = '', font=('Consolas',12))
+        self.playerName.pack(side='left', fill='y')
+
+        self.playerLevel = tk.Label(self.playerInfo, text = '', font=('Consolas',12))
+        self.playerLevel.pack(side='left', fill='y')
+
+        self.playerLife = tk.Label(self.playerInfo, text = '', font=('Consolas',12))
+        self.playerLife.pack(side='left', fill='y')
+
         # Sets up a changing map string
         self.textMap = tk.StringVar()
         self.textMap.set(self.game.drawMap())
         self.map.configure(textvariable=self.textMap)
+
+        # Sets up a changing string for the player info bar
+        self.nameOfPlayer = tk.StringVar()
+        self.nameOfPlayer.set(self.game.player.name)
+        self.playerName.configure(textvariable=self.nameOfPlayer)
+        self.levelOfPlayer = tk.StringVar()
+        self.levelOfPlayer.set(self.game.player.level)
+        self.playerLevel.configure(textvariable=self.levelOfPlayer)
+        self.lifeOfPlayer = tk.StringVar()
+        self.lifeOfPlayer.set('{}/{}'.format(self.game.player.currentLife, self.game.player.maxLife))
+        self.playerLife.configure(textvariable=self.lifeOfPlayer)
 
     def entryField(self, Event):
         turnText = self.textField.get()
@@ -103,6 +128,12 @@ class GameView(tk.Frame):
         self.after(0, self.toggleInteraction(False))
         self.utils.addMap(self.game.drawMap())
         self.after(200, self.drawFromCache)
+
+        self.nameOfPlayer.set(self.game.player.name)
+
+        self.levelOfPlayer.set(self.game.player.level)
+
+        self.lifeOfPlayer.set('{}/{}'.format(self.game.player.currentLife, self.game.player.maxLife))
 
     def drawFromCache(self):
         self.textMap.set(self.utils.mapCache.pop(0))
