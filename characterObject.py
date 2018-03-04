@@ -6,7 +6,7 @@ class Character(genO.GeneralObject):
     maxLife = 0
     currentLife = 0
     baseAttack = 0
-    baseDefence = 0
+    baseDefense = 0
     level = 0
     # reference -     up    right down  left
     availableSides = [True, True, True, True]
@@ -20,7 +20,9 @@ class Character(genO.GeneralObject):
         return
 
     def takeDamage(self, damage):
-        self.currentLife -= math.ceil(damage*(100-self.baseDefence)/100)
+        actualDamage = math.ceil(damage*(100-self.baseDefense)/100)
+        print('{} took {} damage'.format(self.name, actualDamage))
+        self.currentLife -= actualDamage
 
     def findDistance(self, pos2, distType = "absolute"):
         if distType == "absolute": return ((self.position[0]-pos2[0])*(self.position[0]-pos2[0])+(self.position[1]-pos2[1])*(self.position[1]-pos2[1]))

@@ -6,7 +6,7 @@ class Monster(characterObject.Character):
     name = "default monster name"
     maxLifeModifier = 5
     baseAttack = 5
-    baseDefence = 5
+    baseDefense = 5
     level = 0
     items = []
 

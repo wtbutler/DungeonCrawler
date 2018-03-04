@@ -1,4 +1,5 @@
 import characterObject
+import math
 class PlayerCharacter(characterObject.Character):
     icon = "()"
     name = "Neft"
@@ -6,11 +7,14 @@ class PlayerCharacter(characterObject.Character):
     maxLife = 20
     currentLife = 20
     baseAttack = 5
-    baseDefence = 5
+    baseDefense = 5
+    level=1
+    experience=0
     # Head, Torso, Legs, Arms
     armorList = []
     weapon = ''
     itemList = []
+    enchantmentList = []
 
     def __init__(self, positionx, positiony):
         self.position[0] = positionx
@@ -19,8 +23,27 @@ class PlayerCharacter(characterObject.Character):
     def giveInfo(self):
         print('It\'s you, {}!'.format(self.name))
 
+    def takeDamage(self, damage):
+        actualDamage = math.ceil(damage*(100-self.getDefense())/100)
+        print('You took {} damage'.format(actualDamage))
+        self.currentLife -= actualDamage
+
+    def getAttack(self):
+        attack = self.baseAttack
+        for spell in self.enchantmentList:
+            if spell[0]=='attack':
+                attack+=spell[1]
+        return attack
+
+    def getDefense(self):
+        defense = self.baseDefense
+        for spell in self.enchantmentList:
+            if spell[0]=='defense':
+                defense+=spell[1]
+        return defense
+
     def attack(self, direction, broad=False):
-        damage = self.baseAttack
+        damage = self.getAttack
         tileList = []
         if direction=='left': tileList += [[self.position[0],self.position[1]-1]]
         if direction=='down': tileList += [[self.position[0]+1,self.position[1]]]
@@ -48,8 +71,7 @@ class PlayerCharacter(characterObject.Character):
     def equip(self, item):
         if item.itemType=="Weapon":
             self.weapon = item
-            self.attack = self.baseAttack+self.weapon.value
-        elif item.itemType=="Armor":
+        if item.itemType=="Armor":
             if item.slot=="Head":
                 if self.armorList[0]:
                     print('do Nothing')
