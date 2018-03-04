@@ -100,8 +100,8 @@ class GameView(tk.Frame):
         elif self.utils.gameState == 'quit':
             # code for quitting
             # if turnText=='yes' or turnText=='y':
-                global root
-                root.quit()
+            global root
+            root.quit()
         self.textField.delete(0, 'end')
 
     def drawFromCache(self):

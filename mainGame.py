@@ -19,14 +19,15 @@ class Game():
     dungeonMaps = {}
     utils = ''
     keywords = [
-        ["move",'act','move around the map'],
-        ['right',0,'direction to move'],
-        ['left',0,'direction to move'],
-        ['up',0,'direction to move'],
-        ['down',0,'direction to move'],
-        ["attack",'act','attack in a direction'],
-        ['broad', 5,'attack 3 squares weakly in a direction'],
-        ['check', 'pass', 'Give information about the object in a given direction'],
+        ["move",'act','move around the map \'move <direction>\''],
+        ['right',0,'direction to move \'right\''],
+        ['left',0,'direction to move \'left\''],
+        ['up',0,'direction to move \'up\''],
+        ['down',0,'direction to move \'down\''],
+        ["attack",'act','attack in a direction \'attack <type> <direction>\''],
+        ['broad', 5,'attack 3 squares weakly in a direction \'broad <direction>\''],
+        ['check', 'pass', 'Give information about the object in a given direction \'check <direction>\''],
+        ['take', 'pass', 'Take an item from a chest in a given direction \'take <direction> <item #>\''],
         ["test",'pass','run a command of python script','-TESTING ONLY-'],
         ["help",'pass','print a list of commands'],
         ["save",'pass','save the current game'],
@@ -192,6 +193,26 @@ class Game():
             self.currentMap.tileAt(target).check()
             return
         print('Please give a valid direction')
+
+    def takeItem(self, direction, itemIndex):
+        position = self.player.position
+        target = []
+        if direction=='left': target = [position[0],position[1]-1]
+        if direction=='down': target = [position[0]+1,position[1]]
+        if direction=='right': target = [position[0],position[1]+1]
+        if direction=='up': target = [position[0]-1,position[1]]
+        if target==[]:
+            print('Please give a valid direction')
+            return
+        chest = self.currentMap.tileAt(target).actor
+        try:
+            item = chest.take(itemIndex)
+        except Exception as e:
+            print('Please enter a valid item number')
+            return
+        self.player.addItem(item)
+        return
+
 
     # Prints a list of all commands available to the player
     def help(self):
