@@ -83,9 +83,6 @@ class GameView(tk.Frame):
             else:
                 print('invalid command \'{}\', please type another valid command'.format(turnText))
 
-            self.after(0, self.toggleInteraction(False))
-            self.utils.addMap(self.game.drawMap())
-            self.after(200, self.drawFromCache)
         elif self.utils.gameState == 'save':
             #code for save
             self.game.save(turnText)
@@ -103,6 +100,9 @@ class GameView(tk.Frame):
             root.quit()
         print('\n')
         self.textField.delete(0, 'end')
+        self.after(0, self.toggleInteraction(False))
+        self.utils.addMap(self.game.drawMap())
+        self.after(200, self.drawFromCache)
 
     def drawFromCache(self):
         self.textMap.set(self.utils.mapCache.pop(0))

@@ -28,6 +28,11 @@ class PlayerCharacter(characterObject.Character):
         print('You took {} damage'.format(actualDamage))
         self.currentLife -= actualDamage
 
+    def restoreHealth(self, health):
+        self.currentLife+=health
+        if self.currentLife>self.maxLife:
+            self.currentLife=self.maxLife
+
     def getAttack(self):
         attack = self.baseAttack
         for spell in self.enchantmentList:

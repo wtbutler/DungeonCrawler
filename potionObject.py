@@ -17,15 +17,16 @@ class Consumable(itemObject.Item):
         return self.name
 
     def __repr__(self):
-        if self.duration==None: return 'A {} that increases {} by {}'.format(self.name, self.attriute, self.value)
-        return 'A {} that boosts {} by {} for {}'.format(self.name, self.attriute, self.value, self.duration)
+        if self.duration==None: return 'A {} that increases {} by {}'.format(self.name, self.attribute, self.value)
+        return 'A {} that boosts {} by {} for {}'.format(self.name, self.attribute, self.value, self.duration)
 
     def useThis(self, player):
         if self.duration==None:
             if self.attribute=='currentLife':
-                player.currentLife+=self.value
+                player.restoreHealth(self.value)
             if self.attribute=='maxLife':
                 player.maxLife+=self.value
+                player.restoreHealth(value)
             if self.attribute=='baseAttack':
                 player.baseAttack+=self.value
             if self.attribute=='baseDefense':
