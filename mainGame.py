@@ -26,7 +26,7 @@ class Game():
         ["attack",'act','attack in a direction \'attack <type> <direction>\''],
         ['broad', 5,'attack 3 squares weakly in a direction \'broad <direction>\''],
         ['check', 'pass', 'Give information about the object in a given direction \'check <direction>\''],
-        ['take', 'pass', 'Loot a chest or destroy it if it\'s empty \'take <direction> <item #>\''],
+        ['take', 'pass', 'Loot or destroy a chest \'take <direction> <item #>\''],
         ["test",'pass','run a command of python script','-TESTING ONLY-'],
         ["help",'pass','print a list of commands'],
         ["save",'pass','save the current game'],

@@ -33,7 +33,7 @@ class Monster(characterObject.Character):
         if xDiff==0 and yDiff!=0:
             tileList+=[[self.position[0]+int(math.copysign(1,yDiff)), self.position[1]]]
             return [damage, tileList]
-        damage *= .5
+        damage *= .33
         if (xDiff>0 and availableSides[1]) or (xDiff<0 and availableSides[3]):
             tileList+=[[self.position[0], self.position[1]+int(math.copysign(1,xDiff))]]
             tileList+=[[self.position[0]+1, self.position[1]+int(math.copysign(1,xDiff))]]

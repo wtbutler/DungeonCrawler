@@ -43,14 +43,14 @@ class PlayerCharacter(characterObject.Character):
         return defense
 
     def attack(self, direction, broad=False):
-        damage = self.getAttack
+        damage = self.getAttack()
         tileList = []
         if direction=='left': tileList += [[self.position[0],self.position[1]-1]]
         if direction=='down': tileList += [[self.position[0]+1,self.position[1]]]
         if direction=='right': tileList += [[self.position[0],self.position[1]+1]]
         if direction=='up': tileList += [[self.position[0]-1,self.position[1]]]
         if broad:
-            damage*=.5
+            damage*=.33
             if direction=='left':
                 tileList += [[self.position[0]+1,self.position[1]-1]]
                 tileList += [[self.position[0]-1,self.position[1]-1]]
