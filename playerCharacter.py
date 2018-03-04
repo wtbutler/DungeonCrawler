@@ -16,6 +16,9 @@ class PlayerCharacter(characterObject.Character):
         self.position[0] = positionx
         self.position[1] = positiony
 
+    def giveInfo(self):
+        print('It\'s you, {}!'.format(self.name))
+
     def attack(self, direction, broad=False):
         damage = self.baseAttack
         tileList = []
@@ -40,6 +43,9 @@ class PlayerCharacter(characterObject.Character):
         if tileList!=[]: return [damage, tileList]
         return ['error', 'error']
 
+    def addItem(self, item):
+        self.itemList += [item]
+        print('You picked up {}'.format(item))
     def equip(self, item):
         if item.itemType=="Weapon":
             self.weapon = item

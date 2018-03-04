@@ -20,5 +20,5 @@ class Chest(genO.GeneralObject):
 
     def take(self, itemIndex):
         item = self.items.pop(itemIndex)
-        self.giveInfo
+        self.giveInfo()
         return item

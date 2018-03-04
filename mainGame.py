@@ -206,7 +206,7 @@ class Game():
             return
         chest = self.currentMap.tileAt(target).actor
         try:
-            item = chest.take(itemIndex)
+            item = chest.take(int(itemIndex))
         except Exception as e:
             print('Please enter a valid item number')
             return
@@ -257,7 +257,6 @@ class Game():
 
     # Performs the different passive commands player
     def passiveCommand(self):
-        # Code for passive commands
         ## DEBUG information and commands - REMOVE LATER
         if self.turnText[0] == "test":
             if self.debugMode == True:
@@ -275,6 +274,8 @@ class Game():
         if self.turnText[0] == "check":
             if len(self.turnText)>1: self.check(self.turnText[1])
 
+        if self.turnText[0] == "take":
+            if len(self.turnText)>2: self.takeItem(self.turnText[1], self.turnText[2])
         if self.turnText[0] == "help":
             self.help()
 
