@@ -20,3 +20,4 @@ I work on this in my spare time, so any updates will be sporadic at best.
     * Movement engine fully functional  
     * Save/Load functionality still exists, just added a bugfix  
     * Attacking works again  
+    * Can take items from chests and remove chests when empty  
