@@ -63,14 +63,14 @@ class GameView(tk.Frame):
         self.quitButton.pack(side='right')
 
         # Adds labels showing player name, level, and health to infoBar
-        self.playerName = tk.Label(self.playerInfo, text = '', font=('Consolas',12))
+        self.playerName = tk.Label(self.playerInfo, text = '', font=('Consolas',12), bg='#aaa', fg='#000', borderwidth=5)
         self.playerName.pack(side='left', fill='y')
 
-        self.playerLevel = tk.Label(self.playerInfo, text = '', font=('Consolas',12))
+        self.playerLevel = tk.Label(self.playerInfo, text = '', font=('Consolas',12), bg='#aaa', fg='#000', borderwidth=5)
         self.playerLevel.pack(side='left', fill='y')
 
-        self.playerLife = tk.Label(self.playerInfo, text = '', font=('Consolas',12))
-        self.playerLife.pack(side='left', fill='y')
+        self.playerLife = tk.Label(self.playerInfo, text = '', font=('Consolas',12), bg='#aaa', fg='#000', borderwidth=5)
+        self.playerLife.pack(side='right', fill='y')
 
         # Sets up a changing map string
         self.textMap = tk.StringVar()
