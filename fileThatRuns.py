@@ -102,9 +102,11 @@ class GameView(tk.Frame):
             elif self.game.textType=='act':
                 print(' - active command - ')
                 self.game.activeCommand()
-                if self.game.textType=='act': self.game.updateOtherActors()
+                if self.game.textType=='act':
+                    self.game.updateOtherActors()
+                    self.game.player.progressTime()
             else:
-                print('invalid command \'{}\', please type another valid command'.format(turnText))
+                print('invalid command \'{}\', type \'help\' to see a full list of commands'.format(turnText))
 
         elif self.utils.gameState == 'save':
             #code for save

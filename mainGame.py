@@ -19,23 +19,24 @@ class Game():
     dungeonMaps = {}
     utils = ''
     keywords = [
-        ["move",'act','move around the map \'move <direction>\''],
-        ['right',0,'direction to move \'right\''],
-        ['left',0,'direction to move \'left\''],
-        ['up',0,'direction to move \'up\''],
-        ['down',0,'direction to move \'down\''],
-        ["attack",'act','attack in a direction \'attack <type> <direction>\''],
-        ['broad', 5,'attack 3 squares weakly in a direction \'broad <direction>\''],
+        ["move",'act','Move around the map \'move <direction>\''],
+        ['right',0,'Direction to move \'right\''],
+        ['left',0,'Direction to move \'left\''],
+        ['up',0,'Direction to move \'up\''],
+        ['down',0,'Direction to move \'down\''],
+        ["attack",'act','Attack in a direction \'attack <type> <direction>\''],
+        ['broad', 5,'Attack 3 squares weakly in a direction \'broad <direction>\''],
+        ['wait', 'act', 'Wait in place while other creatures move'],
         ['check', 'pass', 'Give information about a given direction \'check <direction>\''],
         ['take', 'pass', 'Loot or destroy a chest \'take <direction> <item #>\''],
         ['inv', 'pass', 'Shows your inventory \'inv\''],
         ['use', 'pass', 'Uses a consumable item from your inventory \'use <item #>\''],
         ['drop', 'pass', 'Removes an item from your inventory forever \'drop <item #>\''],
-        ["test",'pass','run a command of python script','-TESTING ONLY-'],
-        ["help",'pass','print a list of commands'],
-        ["save",'pass','save the current game'],
-        ["load",'pass','load a previous game'],
-        ["end",'pass','ends the current game']
+        ["test",'pass','Run a command of python script','-TESTING ONLY-'],
+        ["help",'pass','Print a list of commands'],
+        ["save",'pass','Save the current game'],
+        ["load",'pass','Load a previous game'],
+        ["end",'pass','Ends the current game']
         ]
 
     # Initializes the game object
@@ -68,8 +69,8 @@ class Game():
         self.dungeonMaps["Start"].addCreature(monsterObject.Monster("defaultName",[6,2], 1, items = [
                                                     potionObject.Consumable('Healing Potion', 'currentLife', 5)]))
         self.dungeonMaps["Start"].addCreature(monsterObject.Monster("defaultName2",[7,2], 1, items = [
-                                                    "Burning Sword",
-                                                    "Healing Potion"]))
+                                                    potionObject.Consumable('Spicy Pepper', 'attack', 5, duration=3),
+                                                    potionObject.Consumable('Healing Potion', 'currentLife', 5)]))
         self.dungeonMaps["dungeon1"].addCreature(monsterObject.Monster("defaultName3",[6,5], 2))
         return
     # ^^^^^^^^^^^^^^^^^^
@@ -328,6 +329,9 @@ class Game():
     # Performs the different active commands player
     def activeCommand(self):
         decision = self.player.update(self.turnText)
+        if decision=='break':
+            self.textType = 'pass'
+            return
 
         # Attack code
         if decision[0]=='attack':
@@ -344,6 +348,9 @@ class Game():
             except Exception as e:
                 print("Please input a valid dirction", e)
                 self.textType = 'pass'
+
+        if decision[0]=='wait': pass
+
 
         self.utils.addMap(self.drawMap())
 

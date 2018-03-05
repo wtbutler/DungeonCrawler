@@ -34,4 +34,4 @@ class Consumable(itemObject.Item):
             if self.attribute=='experience':
                 player.gainExperience(self.value)
             return
-        player.enchantmentList += [self.attribute, self.value, self.duration]
+        player.enchantmentList += [[self.attribute, self.value, self.duration]]

@@ -38,6 +38,7 @@ class PlayerCharacter(characterObject.Character):
         for spell in self.enchantmentList:
             if spell[0]=='attack':
                 attack+=spell[1]
+        # attack+=self.weapon.attack
         return attack
 
     def getDefense(self):
@@ -45,6 +46,8 @@ class PlayerCharacter(characterObject.Character):
         for spell in self.enchantmentList:
             if spell[0]=='defense':
                 defense+=spell[1]
+        for armor in self.armorList:
+            defense+=armor.defense
         return defense
 
     def dropItem(self, itemIndex):
@@ -57,6 +60,7 @@ class PlayerCharacter(characterObject.Character):
         if itemIndex>0 and itemIndex<=len(self.itemList):
             if self.itemList[itemIndex-1].itemType=='consumable':
                 self.itemList[itemIndex-1].useThis(self)
+                self.itemList.pop(itemIndex-1)
             else:
                 print('Please try to use a consumable item')
         else:
@@ -88,6 +92,7 @@ class PlayerCharacter(characterObject.Character):
 
     def addItem(self, item):
         self.itemList += [item]
+
     def equip(self, item):
         if item.itemType=="Weapon":
             self.weapon = item
@@ -105,6 +110,20 @@ class PlayerCharacter(characterObject.Character):
         else:
             print("Please try to equip a valid item.")
 
+    def progressTime(self):
+        for spell in self.enchantmentList:
+            spell[2]-=1
+            print(' - A buff to {} lasting for {} turns'.format(spell[0], spell[2]))
+        stillWorking=True
+        while stillWorking:
+            a=0
+            while a<len(self.enchantmentList) and self.enchantmentList[a][2]>0:
+                a+=1
+            if a == len(self.enchantmentList):
+                stillWorking=False
+            else:
+                self.enchantmentList.pop(a)
+
     def move(self, direction):
         target = []
         if direction=='left': target = [self.position[0],self.position[1]-1]
@@ -114,6 +133,10 @@ class PlayerCharacter(characterObject.Character):
         if target!=[]: return target
 
     def update(self, turnText):
+        if turnText[0] == 'wait': return ['wait']
+        if len(turnText)<2:
+            print('Please add an argument')
+            return 'break'
         if turnText[0] == 'move':
             return ['move', self.move(turnText[1])]
         if turnText[0] == 'attack':
