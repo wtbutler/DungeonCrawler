@@ -1,6 +1,5 @@
 import actors.characterObject
 import math
-import random as rand
 class PlayerCharacter(actors.characterObject.Character):
     icon = "()"
     name = "Neft"
@@ -28,13 +27,9 @@ class PlayerCharacter(actors.characterObject.Character):
         print('It\'s you, {}!'.format(self.name))
 
     def takeDamage(self, damage):
-        hitRange = (100-self.getDefense())
-        r = rand.Random()
-        if r.randint(0,99)<hitRange:
-            print('You took {} damage'.format(math.ceil(damage)))
-            self.currentLife -= math.ceil(damage)
-        else:
-            print('You dodged!')
+        actualDamage = math.ceil(damage*(100-self.getDefense())/100)
+        print('You took {} damage'.format(actualDamage))
+        self.currentLife -= actualDamage
 
     def restoreHealth(self, health):
         self.currentLife+=health
