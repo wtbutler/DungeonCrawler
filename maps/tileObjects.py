@@ -1,5 +1,5 @@
-import tile
-class FloorTile(tile.Tile):
+import maps.tile
+class FloorTile(maps.tile.Tile):
     actor = 0
     def __init__(self):
         self.actor = 0
@@ -29,7 +29,7 @@ class FloorTile(tile.Tile):
         else:
             self.actor.giveInfo()
 
-class WallTile(tile.Tile):
+class WallTile(maps.tile.Tile):
     def __init__(self, myicon):
         self.icon = myicon
         self.type = 'wall'
@@ -40,7 +40,7 @@ class WallTile(tile.Tile):
     def check(self):
         print('A very solid wall!')
 
-class DoorTile(tile.Tile):
+class DoorTile(maps.tile.Tile):
     connection = []
     def __init__(self):
         self.icon = "--"

@@ -1,4 +1,3 @@
-import tile
 class DungeonMap():
     name = ""
     mapCoordinateList = []

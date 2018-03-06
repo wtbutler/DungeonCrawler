@@ -1,9 +1,10 @@
 import os, sys
 import pickle
 
-import mapReading
-import mapObject
 import util
+
+import maps.mapReading
+import maps.mapObject
 
 import actors.playerCharacter
 import actors.monsterObject
@@ -60,8 +61,8 @@ class Game():
     # Initializes objects for maps
     def loadMaps(self):
         self.dungeonMaps = {}
-        for imageName in os.listdir(self.path+"maps\\"):
-            self.dungeonMaps[imageName[:-4]] = mapObject.DungeonMap(mapReading.getMapFromImage(self.path+"maps\\", imageName))
+        for imageName in os.listdir(self.path+"maps\\mapimages\\"):
+            self.dungeonMaps[imageName[:-4]] = maps.mapObject.DungeonMap(maps.mapReading.getMapFromImage(self.path+"maps\\mapimages\\", imageName))
         self.dungeonMaps["Start"].setConnection(       [["Start", (8,12)]  ,   ["dungeon2", (2,3)]])
         self.dungeonMaps["Start"].setConnection(       [["Start",(3,18)]   ,   ["dungeon1",(9,3)]] )
         self.dungeonMaps["dungeon1"].setConnection(    [["dungeon1",(9,2)] ,   ["Start",(3,17)]]   )

@@ -1,6 +1,6 @@
 import os,sys
 from PIL import Image
-import tileObjects
+import maps.tileObjects
 
 def getMapFromImage(path, image):
 
@@ -22,7 +22,7 @@ def getMapFromImage(path, image):
     for x in range(xLen):
         for y in range(yLen):
             tile = "  "
-            if mapPix[x,y] == emptyFloor: mapToReturn[y][x] = tileObjects.FloorTile()
+            if mapPix[x,y] == emptyFloor: mapToReturn[y][x] = maps.tileObjects.FloorTile()
             if mapPix[x,y] == wall:
                 up = False
                 down = False
@@ -45,8 +45,8 @@ def getMapFromImage(path, image):
                 elif up and down: tile = "||"
                 elif left and right: tile = "=="
                 else: tile = "##"
-                mapToReturn[y][x] = tileObjects.WallTile(tile)
+                mapToReturn[y][x] = maps.tileObjects.WallTile(tile)
             if mapPix[x,y] == door:
                 tile = "--"
-                mapToReturn[y][x] = tileObjects.DoorTile()
+                mapToReturn[y][x] = maps.tileObjects.DoorTile()
     return mapToReturn+[mapName]
