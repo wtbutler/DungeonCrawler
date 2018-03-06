@@ -28,11 +28,11 @@ class PlayerCharacter(characterObject.Character):
         print('It\'s you, {}!'.format(self.name))
 
     def takeDamage(self, damage):
-        hitRange = math.ceil((100-self.getDefense())/100)
+        hitRange = (100-self.getDefense())
         r = rand.Random()
         if r.randint(0,99)<hitRange:
-            print('You took {} damage'.format(actualDamage))
-            self.currentLife -= actualDamage
+            print('You took {} damage'.format(math.ceil(damage)))
+            self.currentLife -= math.ceil(damage)
         else:
             print('You dodged!')
 
