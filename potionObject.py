@@ -15,7 +15,7 @@ class Consumable(itemObject.Item):
 
     def __repr__(self):
         if self.duration==None: return 'A {} that increases {} by {}'.format(self.name, self.attribute, self.value)
-        return 'A {} that boosts {} by {} for {}'.format(self.name, self.attribute, self.value, self.duration)
+        return 'A {} that boosts {} by {} for {} turns'.format(self.name, self.attribute, self.value, self.duration)
 
     def useThis(self, player):
         if self.duration==None:

@@ -78,18 +78,18 @@ class PlayerCharacter(characterObject.Character):
                 return
             if item.itemType=='weapon':
                 if item.isEquipped:
-                    print('You removed {}'.format(item))
+                    print('You removed {}'.format(str(item)))
                     item.unequip(self)
                 else:
-                    print('You equipped {}'.format(item))
+                    print('You equipped {}'.format(str(item)))
                     item.equip(self)
                 return
             if item.itemType=='armor':
                 if item.isEquipped:
-                    print('You removed {}'.format(item))
+                    print('You removed {}'.format(str(item)))
                     item.unequip(self)
                 else:
-                    print('You put on {}'.format(item))
+                    print('You put on {}'.format(str(item)))
                     item.equip(self)
                 return
             print('This is not an item you can use')
@@ -141,6 +141,7 @@ class PlayerCharacter(characterObject.Character):
             print("Please try to equip a valid item.")
 
     def progressTime(self):
+        if len(self.enchantmentList)>0: print('You buffs are:')
         for spell in self.enchantmentList:
             spell[2]-=1
             print(' - A buff to {} lasting for {} turns'.format(spell[0], spell[2]))
