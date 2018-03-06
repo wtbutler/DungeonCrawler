@@ -8,6 +8,7 @@ import chestObject
 import util
 import potionObject
 import armorObject
+import weaponObject
 
 class Game():
     player = 0
@@ -68,10 +69,11 @@ class Game():
     ## DEBUG - REMOVE LATER - spawns enemies in rooms
     def debugSpace(self):
         self.dungeonMaps["Start"].addCreature(monsterObject.Monster("defaultName",[6,2], 1, items = [
-                                                    potionObject.Consumable('Healing Potion', 'currentLife', 5)]))
+                                                    potionObject.Consumable('Healing Potion', 'currentLife', 5), 
+                                                    weaponObject.Weapon('Iron Sword', 5)]))
         self.dungeonMaps["Start"].addCreature(monsterObject.Monster("defaultName2",[7,2], 1, items = [
                                                     potionObject.Consumable('Spicy Pepper', 'attack', 5, duration=3),
-                                                    armorObject.Armor('Iron Breastplate', 'chest', 5)]))
+                                                    armorObject.Armor('Iron Breastplate', 'chest', 20)]))
         self.dungeonMaps["dungeon1"].addCreature(monsterObject.Monster("defaultName3",[6,5], 2))
         return
     # ^^^^^^^^^^^^^^^^^^

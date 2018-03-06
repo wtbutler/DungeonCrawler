@@ -71,6 +71,14 @@ class PlayerCharacter(characterObject.Character):
                 item.useThis(self)
                 self.itemList.pop(itemIndex-1)
                 return
+            if item.itemType=='weapon':
+                if item.isEquipped:
+                    print('You removed {}'.format(item))
+                    item.unequip(self)
+                    return
+                else:
+                    print('You equipped {}'.format(item))
+                    item.equip(self)
             if item.itemType=='armor':
                 if item.isEquipped:
                     print('You removed {}'.format(item))
@@ -79,7 +87,7 @@ class PlayerCharacter(characterObject.Character):
                 else:
                     print('You put on {}'.format(item))
                     item.equip(self)
-            print('Please try to use a consumable item')
+            print('This is not an item you can use')
         else:
             print('That is not an item in your inventory')
 
