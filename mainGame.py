@@ -7,6 +7,7 @@ import pickle
 import chestObject
 import util
 import potionObject
+import armorObject
 
 class Game():
     player = 0
@@ -70,7 +71,7 @@ class Game():
                                                     potionObject.Consumable('Healing Potion', 'currentLife', 5)]))
         self.dungeonMaps["Start"].addCreature(monsterObject.Monster("defaultName2",[7,2], 1, items = [
                                                     potionObject.Consumable('Spicy Pepper', 'attack', 5, duration=3),
-                                                    potionObject.Consumable('Healing Potion', 'currentLife', 5)]))
+                                                    armorObject.Armor('Iron Breastplate', 'chest', 5)]))
         self.dungeonMaps["dungeon1"].addCreature(monsterObject.Monster("defaultName3",[6,5], 2))
         return
     # ^^^^^^^^^^^^^^^^^^

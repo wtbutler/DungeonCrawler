@@ -11,8 +11,11 @@ class PlayerCharacter(characterObject.Character):
     level=1
     experience=0
     # Head, Torso, Legs, Arms
-    armorList = []
-    weapon = ''
+    weapon = 0
+    headSlot = 0
+    chestSlot = 0
+    legSlot = 0
+    armSlot = 0
     itemList = []
     enchantmentList = []
 
@@ -38,7 +41,7 @@ class PlayerCharacter(characterObject.Character):
         for spell in self.enchantmentList:
             if spell[0]=='attack':
                 attack+=spell[1]
-        # attack+=self.weapon.attack
+        if self.weapon!=0: attack+=self.weapon.value
         return attack
 
     def getDefense(self):
@@ -46,23 +49,37 @@ class PlayerCharacter(characterObject.Character):
         for spell in self.enchantmentList:
             if spell[0]=='defense':
                 defense+=spell[1]
-        for armor in self.armorList:
-            defense+=armor.defense
+        if self.headSlot!=0: defense+=self.headSlot.value
+        if self.chestSlot!=0: defense+=self.chestSlot.value
+        if self.legSlot!=0: defense+=self.legSlot.value
+        if self.armSlot!=0: defense+=self.armSlot.value
         return defense
 
     def dropItem(self, itemIndex):
         if itemIndex>0 and itemIndex<=len(self.itemList):
-            print('You dropped {}'.format(self.itemList.pop(itemIndex-1)))
+            item = self.itemList.pop(itemIndex-1)
+            print('You dropped {}'.format(item))
+            if item.isEquipped: item.unequip(self)
         else:
             print('That is not an item in your inventory')
 
     def useItem(self, itemIndex):
         if itemIndex>0 and itemIndex<=len(self.itemList):
-            if self.itemList[itemIndex-1].itemType=='consumable':
-                self.itemList[itemIndex-1].useThis(self)
+            item = self.itemList[itemIndex-1]
+            if item.itemType=='consumable':
+                print('You used {}'.format(item))
+                item.useThis(self)
                 self.itemList.pop(itemIndex-1)
-            else:
-                print('Please try to use a consumable item')
+                return
+            if item.itemType=='armor':
+                if item.isEquipped:
+                    print('You removed {}'.format(item))
+                    item.unequip(self)
+                    return
+                else:
+                    print('You put on {}'.format(item))
+                    item.equip(self)
+            print('Please try to use a consumable item')
         else:
             print('That is not an item in your inventory')
 

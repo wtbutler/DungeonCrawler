@@ -13,9 +13,6 @@ class Consumable(itemObject.Item):
         self.value = value
         self.duration = duration
 
-    def __str__(self):
-        return self.name
-
     def __repr__(self):
         if self.duration==None: return 'A {} that increases {} by {}'.format(self.name, self.attribute, self.value)
         return 'A {} that boosts {} by {} for {}'.format(self.name, self.attribute, self.value, self.duration)
