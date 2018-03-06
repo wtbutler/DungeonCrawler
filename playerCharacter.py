@@ -63,7 +63,7 @@ class PlayerCharacter(characterObject.Character):
     def dropItem(self, itemIndex):
         if itemIndex>0 and itemIndex<=len(self.itemList):
             item = self.itemList.pop(itemIndex-1)
-            print('You dropped {}'.format(item))
+            print('You dropped the {}'.format(str(item)))
             if item.isEquipped: item.unequip(self)
         else:
             print('That is not an item in your inventory')
@@ -80,18 +80,18 @@ class PlayerCharacter(characterObject.Character):
                 if item.isEquipped:
                     print('You removed {}'.format(item))
                     item.unequip(self)
-                    return
                 else:
                     print('You equipped {}'.format(item))
                     item.equip(self)
+                return
             if item.itemType=='armor':
                 if item.isEquipped:
                     print('You removed {}'.format(item))
                     item.unequip(self)
-                    return
                 else:
                     print('You put on {}'.format(item))
                     item.equip(self)
+                return
             print('This is not an item you can use')
         else:
             print('That is not an item in your inventory')

@@ -32,7 +32,7 @@ class Game():
         ['check', 'pass', 'Give information about a given direction \'check <direction>\''],
         ['take', 'pass', 'Loot or destroy a chest \'take <direction> <item #>\''],
         ['inv', 'pass', 'Shows your inventory \'inv\''],
-        ['use', 'pass', 'Uses a consumable item from your inventory \'use <item #>\''],
+        ['use', 'pass', 'Use or equip an item from your inventory \'use <item #>\''],
         ['drop', 'pass', 'Removes an item from your inventory forever \'drop <item #>\''],
         ["test",'pass','Run a command of python script','-TESTING ONLY-'],
         ["help",'pass','Print a list of commands'],
@@ -69,7 +69,7 @@ class Game():
     ## DEBUG - REMOVE LATER - spawns enemies in rooms
     def debugSpace(self):
         self.dungeonMaps["Start"].addCreature(monsterObject.Monster("defaultName",[6,2], 1, items = [
-                                                    potionObject.Consumable('Healing Potion', 'currentLife', 5), 
+                                                    potionObject.Consumable('Healing Potion', 'currentLife', 5),
                                                     weaponObject.Weapon('Iron Sword', 5)]))
         self.dungeonMaps["Start"].addCreature(monsterObject.Monster("defaultName2",[7,2], 1, items = [
                                                     potionObject.Consumable('Spicy Pepper', 'attack', 5, duration=3),
