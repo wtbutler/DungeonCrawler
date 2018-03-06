@@ -1,7 +1,7 @@
-import characterObject
+import actors.characterObject
 import math
 import random as rand
-class PlayerCharacter(characterObject.Character):
+class PlayerCharacter(actors.characterObject.Character):
     icon = "()"
     name = "Neft"
     position= [0,0]

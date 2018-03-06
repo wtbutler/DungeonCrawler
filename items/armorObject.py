@@ -1,4 +1,5 @@
-class Armor():
+import items.itemObject
+class Armor(items.itemObject.Item):
     name = ''
     slot = ''
     value = 0

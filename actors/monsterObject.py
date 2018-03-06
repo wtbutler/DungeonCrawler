@@ -1,7 +1,7 @@
-import characterObject
-import chestObject
+import actors.characterObject
+import actors.chestObject
 import math
-class Monster(characterObject.Character):
+class Monster(actors.characterObject.Character):
     icon = ":["
     name = "default monster name"
     maxLifeModifier = 5
@@ -45,7 +45,7 @@ class Monster(characterObject.Character):
         return [damage, tileList]
 
     def death(self):
-        return chestObject.Chest(self.position, name = self.name, items = self.items)
+        return actors.chestObject.Chest(self.position, name = self.name, items = self.items)
 
     def giveInfo(self):
         print('A big scary {}!'.format(self.name))

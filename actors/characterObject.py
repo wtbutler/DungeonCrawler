@@ -1,5 +1,5 @@
 import random as r
-import generalObject as genO
+import actors.generalObject as genO
 import math
 class Character(genO.GeneralObject):
     name = "default character name"

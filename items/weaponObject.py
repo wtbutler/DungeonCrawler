@@ -1,4 +1,5 @@
-class Weapon():
+import items.itemObject
+class Weapon(items.itemObject.Item):
     name = ''
     value = 0
     isEquipped = False

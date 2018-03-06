@@ -1,4 +1,4 @@
-import generalObject as genO
+import actors.generalObject as genO
 class Chest(genO.GeneralObject):
     icon = "(]"
     name = "chest"

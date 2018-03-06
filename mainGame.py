@@ -1,14 +1,17 @@
 import os, sys
-import mapReading
-import playerCharacter
-import mapObject
-import monsterObject
 import pickle
-import chestObject
+
+import mapReading
+import mapObject
 import util
-import potionObject
-import armorObject
-import weaponObject
+
+import actors.playerCharacter
+import actors.monsterObject
+import actors.chestObject
+
+import items.potionObject
+import items.armorObject
+import items.weaponObject
 
 class Game():
     player = 0
@@ -43,7 +46,7 @@ class Game():
 
     # Initializes the game object
     def __init__(self):
-        self.player = playerCharacter.PlayerCharacter(2,2)
+        self.player = actors.playerCharacter.PlayerCharacter(2,2)
         self.findPath()
         self.loadMaps()
         self.debugSpace()
@@ -68,13 +71,13 @@ class Game():
 
     ## DEBUG - REMOVE LATER - spawns enemies in rooms
     def debugSpace(self):
-        self.dungeonMaps["Start"].addCreature(monsterObject.Monster("defaultName",[6,2], 1, items = [
-                                                    potionObject.Consumable('Healing Potion', 'currentLife', 5),
-                                                    weaponObject.Weapon('Iron Sword', 5)]))
-        self.dungeonMaps["Start"].addCreature(monsterObject.Monster("defaultName2",[7,2], 1, items = [
-                                                    potionObject.Consumable('Spicy Pepper', 'attack', 5, duration=3),
-                                                    armorObject.Armor('Iron Breastplate', 'chest', 20)]))
-        self.dungeonMaps["dungeon1"].addCreature(monsterObject.Monster("defaultName3",[6,5], 2))
+        self.dungeonMaps["Start"].addCreature(actors.monsterObject.Monster("defaultName",[6,2], 1, items = [
+                                                    items.potionObject.Consumable('Healing Potion', 'currentLife', 5),
+                                                    items.weaponObject.Weapon('Iron Sword', 5)]))
+        self.dungeonMaps["Start"].addCreature(actors.monsterObject.Monster("defaultName2",[7,2], 1, items = [
+                                                    items.potionObject.Consumable('Spicy Pepper', 'attack', 5, duration=3),
+                                                    items.armorObject.Armor('Iron Breastplate', 'chest', 20)]))
+        self.dungeonMaps["dungeon1"].addCreature(actors.monsterObject.Monster("defaultName3",[6,5], 2))
         return
     # ^^^^^^^^^^^^^^^^^^
 
@@ -215,7 +218,7 @@ class Game():
             print('Please give a valid direction')
             return
         chest = self.currentMap.tileAt(target).actor
-        if not(type(chest) is chestObject.Chest):
+        if not(type(chest) is actors.chestObject.Chest):
             print('There is not a chest there!')
             return
         try:

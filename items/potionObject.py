@@ -1,5 +1,5 @@
-import itemObject
-class Consumable(itemObject.Item):
+import items.itemObject
+class Consumable(items.itemObject.Item):
     name = ''
     itemType=''
     attribute = ''
