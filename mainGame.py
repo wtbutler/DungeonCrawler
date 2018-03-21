@@ -72,12 +72,8 @@ class Game():
 
     ## DEBUG - REMOVE LATER - spawns enemies in rooms
     def debugSpace(self):
-        self.dungeonMaps["Start"].addCreature(actors.monsterObject.Monster("defaultName",[6,2], 1, items = [
-                                                    items.potionObject.Consumable('Healing Potion', 'currentLife', 5),
-                                                    items.weaponObject.Weapon('Iron Sword', 5)]))
-        self.dungeonMaps["Start"].addCreature(actors.monsterObject.Monster("defaultName2",[7,2], 1, items = [
-                                                    items.potionObject.Consumable('Spicy Pepper', 'attack', 5, duration=3),
-                                                    items.armorObject.Armor('Iron Breastplate', 'chest', 20)]))
+        self.dungeonMaps["Start"].addCreature(actors.monsterObject.Monster("defaultName",[6,2], 1, itemCount = 2))
+        self.dungeonMaps["Start"].addCreature(actors.monsterObject.Monster("defaultName2",[7,2], 1, itemCount = 2))
         self.dungeonMaps["dungeon1"].addCreature(actors.monsterObject.Monster("defaultName3",[6,5], 2))
         return
     # ^^^^^^^^^^^^^^^^^^

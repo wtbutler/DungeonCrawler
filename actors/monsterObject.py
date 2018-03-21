@@ -1,5 +1,6 @@
 import actors.characterObject
 import actors.chestObject
+import items.randomItem
 import math
 class Monster(actors.characterObject.Character):
     icon = ":["
@@ -8,16 +9,17 @@ class Monster(actors.characterObject.Character):
     baseAttack = 5
     baseDefense = 5
     level = 0
-    items = []
+    itemList = []
 
-    def __init__(self, name, position, level, health = -1, items = []):
+    def __init__(self, name, position, level, health = -1, itemCount = 0):
         self.name = name
         self.icon = ":["
         self.level = level
         self.position = position
         self.maxLife = self.maxLifeModifier * level
         self.currentLife = self.maxLife
-        self.items = items
+        for i in range(itemCount):
+            self.itemList += [ items.randomItem.getItem( level ) ]
         if health != -1:
             self.currentLife = health
             if self.currentLife>self.maxLife: self.maxLife = health
@@ -45,7 +47,7 @@ class Monster(actors.characterObject.Character):
         return [damage, tileList]
 
     def death(self):
-        return actors.chestObject.Chest(self.position, name = self.name, items = self.items)
+        return actors.chestObject.Chest(self.position, name = self.name, itemList = self.itemList)
 
     def giveInfo(self):
         print('A big scary {}!'.format(self.name))

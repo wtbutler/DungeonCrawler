@@ -5,8 +5,8 @@ class Chest(genO.GeneralObject):
     poisition = []
     items = []
 
-    def __init__(self, position, name='chest', items=[]):
-        self.items = items
+    def __init__(self, position, name='chest', itemList=[]):
+        self.items = itemList
         self.position = position
         if name!='chest': self.name = 'chest from {}'.format(name)
 

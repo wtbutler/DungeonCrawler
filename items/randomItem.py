@@ -7,7 +7,7 @@ import random as r
 armorSlots = [ 'head', 'chest', 'legs', 'arms' ]
 consumableTypes = [ 'currentLife', 'attack', 'defense', ]
 
-def randomObject( level ):
+def getItem( level ):
     chooser = r.randint( 0, 2 )
     print( 'chooser : {}'.format(chooser))
     if chooser == 0:
