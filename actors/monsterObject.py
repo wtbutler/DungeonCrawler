@@ -18,6 +18,7 @@ class Monster(actors.characterObject.Character):
         self.position = position
         self.maxLife = self.maxLifeModifier * level
         self.currentLife = self.maxLife
+        self.itemList = []
         for i in range(itemCount):
             self.itemList += [ items.randomItem.getItem( level ) ]
         if health != -1:
