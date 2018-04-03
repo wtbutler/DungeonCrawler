@@ -56,13 +56,13 @@ class Game():
 
     # Locates dungeon maps
     def findPath(self):
-        self.path = os.path.dirname(os.path.realpath(__file__))+"\\"
+        self.path = os.path.dirname(os.path.realpath(__file__))+"/"
 
     # Initializes objects for maps
     def loadMaps(self):
         self.dungeonMaps = {}
-        for imageName in os.listdir(self.path+"maps\\mapimages\\"):
-            self.dungeonMaps[imageName[:-4]] = maps.mapObject.DungeonMap(maps.mapReading.getMapFromImage(self.path+"maps\\mapimages\\", imageName))
+        for imageName in os.listdir(self.path+"maps/mapimages/"):
+            self.dungeonMaps[imageName[:-4]] = maps.mapObject.DungeonMap(maps.mapReading.getMapFromImage(self.path+"maps/mapimages/", imageName))
         self.dungeonMaps["Start"].setConnection(       [["Start", (8,12)]  ,   ["dungeon2", (2,3)]])
         self.dungeonMaps["Start"].setConnection(       [["Start",(3,18)]   ,   ["dungeon1",(9,3)]] )
         self.dungeonMaps["dungeon1"].setConnection(    [["dungeon1",(9,2)] ,   ["Start",(3,17)]]   )
@@ -259,7 +259,7 @@ class Game():
     # Def save functionality
     def save(self, saveName):
         if saveName != "":
-            with open(self.path+"saves\\"+saveName+'.dat', 'wb') as f:
+            with open(self.path+"saves/"+saveName+'.dat', 'wb') as f:
                 pickle.dump([self.player, self.dungeonMaps, self.currentMap, self.currentActors, self.currentObjects], f)
         else:
             print("Please enter a name for your save file")
@@ -267,14 +267,14 @@ class Game():
     # Shows all saved files for selection to load
     def loadSetup(self):
         print('Please select save...')
-        for saveName in os.listdir(self.path+"saves\\"):
+        for saveName in os.listdir(self.path+"saves/"):
             if saveName!='emp.ty':
                 print(" "+saveName[:-4])
 
     # loads the file chosen
     def load(self, loadName):
         try:
-            with open(self.path+"saves\\"+loadName+".dat", 'rb') as f:
+            with open(self.path+"saves/"+loadName+".dat", 'rb') as f:
                 self.player, self.dungeonMaps, self.currentMap, self.currentActors, self.currentObjects = pickle.load(f)
             self.player.teleport(self.player.position)
             self.drawMap()
