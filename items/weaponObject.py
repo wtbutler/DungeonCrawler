@@ -9,6 +9,7 @@ class Weapon(items.itemObject.Item):
         self.value = value
         self.isEquipped = False
         self.itemType = 'weapon'
+        if self.name == 'defaultRandomName': self.name = self.randomName()
 
     def __repr__(self):
         if self.isEquipped: return 'A {} with an attack {} that is currently equipped'.format(self.name, self.value)

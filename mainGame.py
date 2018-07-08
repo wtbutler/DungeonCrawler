@@ -300,9 +300,11 @@ class Game():
         # Regular Commands
         if self.turnText[0] == "check":
             if len(self.turnText)>1: self.check(self.turnText[1])
+            else: print('Please enter a direction')
 
         if self.turnText[0] == "take":
-            self.takeItem(self.turnText[1])
+            if len(self.turnText)>1: self.takeItem(self.turnText[1])
+            else: print('Please enter a direction')
 
         if self.turnText[0] == "help":
             self.help()

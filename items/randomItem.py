@@ -9,7 +9,6 @@ consumableTypes = [ 'currentLife', 'attack', 'defense', ]
 
 def getItem( level ):
     chooser = r.randint( 0, 2 )
-    print( 'chooser : {}'.format(chooser))
     if chooser == 0:
         itemSlot = armorSlots[ int( r.random() * 4 ) ]
         value = 5 + 2 * level + int( ( r.random() - .5 ) * 6 )

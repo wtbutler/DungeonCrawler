@@ -12,6 +12,7 @@ class Consumable(items.itemObject.Item):
         self.attribute = attribute
         self.value = value
         self.duration = duration
+        if self.name == 'defaultRandomName': self.name = self.randomName()
 
     def __repr__(self):
         if self.duration==None: return 'A {} that increases {} by {}'.format(self.name, self.attribute, self.value)
