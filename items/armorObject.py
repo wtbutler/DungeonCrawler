@@ -4,12 +4,12 @@ class Armor(items.itemObject.Item):
     slot = ''
     value = 0
     isEquipped = False
-    lowStrengthNames = ['Cloth', 'Goblin',
-    medStrengthNames = ['Iron', 'Steel', 'Dwarven', 'Elven',
-    highStrengthNames = ['Plate',
-    ultStrenthNames = ['Starforged', 'Hellforged',
-    headSlotNames = ['Helmet', 'Hat', 'Cap',
-    chestSlotNames = ['Armor', 'Shirt', 
+    lowStrengthNames = ['Cloth', 'Goblin']
+    medStrengthNames = ['Iron', 'Steel', 'Dwarven', 'Elven']
+    highStrengthNames = ['Plate']
+    ultStrenthNames = ['Starforged', 'Hellforged']
+    headSlotNames = ['Helmet', 'Hat', 'Cap']
+    chestSlotNames = ['Armor', 'Shirt']
 
     def __init__(self, name, slot, value):
         self.name = name
@@ -17,7 +17,7 @@ class Armor(items.itemObject.Item):
         self.value = value
         self.isEquipped = False
         self.itemType = 'armor'
-        if self.name == 'defaultRandomName': self.name = self.randomName()
+        # if self.name == 'defaultRandomName': self.name = self.randomName()
 
     def __repr__(self):
         if self.isEquipped: return 'A {} with an armor rating {} that is currently equipped'.format(self.name, self.value)
@@ -25,7 +25,7 @@ class Armor(items.itemObject.Item):
 
     def randomName(self):
         name = ''
-        if self.slot == 'head': name += headSlotNames[]
+        if self.slot == 'head': name += headSlotNames
 
     def equip(self, player):
         if self.slot == 'head': player.headSlot = self
